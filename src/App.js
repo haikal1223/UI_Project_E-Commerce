@@ -1,8 +1,7 @@
 import React from 'react'
-import Navbar from './component/pages/header'
-import {Route} from 'react-router-dom'
-import Jumbotron from './component/pages/jumbotron'
-import Register from './component/pages/register'
+import Navbar from './pages/header'
+import { Route } from 'react-router-dom'
+import Homepage from './pages/home'
 
 class App extends React.Component{
 
@@ -12,8 +11,8 @@ class App extends React.Component{
     return(
       <div>
         <Navbar/>
-          <Route exact path='/' component={Jumbotron} />
-          <Route path='/register' component={Register} />
+          <Route exact path='/' component={Homepage} />
+        
       </div>
     )
   }

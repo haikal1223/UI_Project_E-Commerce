@@ -23,6 +23,10 @@
   color: #61dafb;
 }
 
+.Navbar {
+  position: fixed;
+}
+
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
