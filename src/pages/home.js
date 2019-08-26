@@ -4,8 +4,10 @@ import Jumbotron from '../component/JumbotronSliders'
 class Home extends React.Component{
     render(){
         return(
-            <div>
+            <div className='bg-light'>
+                <div>
                 <Jumbotron/>
+                </div>
             </div>
         )
     }
