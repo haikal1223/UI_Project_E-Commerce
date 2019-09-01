@@ -18,6 +18,8 @@ import {IoIosCart} from 'react-icons/io'
 import { FaUserCog } from "react-icons/fa";
 import Axios from 'axios';
 import { API_URL } from '../API_URL';
+import { Box } from '@material-ui/core';
+import { connect } from 'react-redux'
 
 
 class App extends React.Component {
@@ -25,7 +27,8 @@ class App extends React.Component {
     isOpen: false,
     cartAddOn: 86,
     categoryDrop: [],
-    brandDrop: []
+    brandDrop: [],
+    searched: []
   }
   componentDidMount(){
     Axios.get('http://localhost:1999/category/getcategory')
@@ -44,7 +47,13 @@ class App extends React.Component {
       console.log(err)
     })
 
-    Axios.get(API_URL + `/search/getsearched?search=`)
+    Axios.get(API_URL + `/search/getsearched?search=${this.refs.search-Box.value}`)
+    .then((res) => {
+      this.setState({searched:res.data})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
   }
   
   
@@ -78,7 +87,10 @@ renderBrandList = () => {
   
     return (
       <div>
-        <GoSearch className='search-icon' />
+        <div  className='search-icon'>
+        <GoSearch /> 
+        <input type='search' refs='search-box' ref='search-box' placeholder='What do you need ?' />
+        </div>
         <Link to='/mycart'>
           <IoIosCart className='flex-center cart-icon'   />
             {this.state.cartAddOn < 1 ? null :
@@ -125,7 +137,6 @@ renderBrandList = () => {
         
         <div className='ml-auto'>
         <FaUserCog/>
-        
             
         </div>
           </Collapse>
@@ -135,4 +146,11 @@ renderBrandList = () => {
     );
   }
 }
-export default App
+
+const mapStateToProps = (state) => {
+  return{
+    
+  }
+}
+
+export default connect(mapStateToProps)(App)

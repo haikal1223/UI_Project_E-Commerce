@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom'
-import { Card } from 'reactstrap'
 import { Paper } from '@material-ui/core'
 
 class Login extends Component {
