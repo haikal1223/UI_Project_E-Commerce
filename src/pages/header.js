@@ -16,19 +16,66 @@ import { Link } from 'react-router-dom';
 import {GoSearch} from 'react-icons/go'
 import {IoIosCart} from 'react-icons/io'
 import { FaUserCog } from "react-icons/fa";
+import Axios from 'axios';
+import { API_URL } from '../API_URL';
 
 
 class App extends React.Component {
   state = {
     isOpen: false,
-    cartAddOn: 86
+    cartAddOn: 86,
+    categoryDrop: [],
+    brandDrop: []
   }
+  componentDidMount(){
+    Axios.get('http://localhost:1999/category/getcategory')
+    .then((res) => {
+      this.setState({categoryDrop: res.data})
+    })
+    .catch((err)=>{
+      console.log(err);
+    })
+
+    Axios.get(API_URL + '/brand/getbrand')
+    .then((res) => {
+      this.setState({brandDrop: res.data})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+    Axios.get(API_URL + `/search/getsearched?search=`)
+  }
+  
+  
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
   }
+
+renderBrandList = () => {
+  return this.state.brandDrop.map((val) => {
+    return(
+      <DropdownItem href={'showcase?brand=' + val.id}>
+        {val.name}
+      </DropdownItem>
+    )
+  })
+}
+
+  renderCategoryList = () => {
+      return this.state.categoryDrop.map((item) => {
+        return(
+          <DropdownItem href={'showcase?category=' + item.id} >
+            {item.name}
+          </DropdownItem>
+        )
+      })
+  }
+
   render() {
+  
     return (
       <div>
         <GoSearch className='search-icon' />
@@ -43,7 +90,7 @@ class App extends React.Component {
           <NavbarBrand className='logo' >Furion</NavbarBrand>
           </Link>
           <NavbarToggler className='ml-auto'  onClick={this.toggle}/>
-          <Collapse isOpen={this.state.isOpen} navbar className='col'>
+          <Collapse isOpen={this.state.isOpen} navbar >
           <div className='mr-4'>
           <Nav className="ml-auto" navbar>
                 <UncontrolledDropdown nav inNavbar>
@@ -51,21 +98,7 @@ class App extends React.Component {
                 <span className='category-list' style={{color: 'white',fontWeight:'600'}}>BRAND</span>
                 </DropdownToggle>
                 <DropdownMenu >
-                    <DropdownItem>
-                    Option 1
-                    </DropdownItem>
-                    <DropdownItem>
-                    Option 2
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
+                   {this.renderBrandList()}
                 </DropdownMenu>
                 </UncontrolledDropdown>          
             </Nav>          
@@ -77,21 +110,7 @@ class App extends React.Component {
                 <span className='category-list' style={{color: 'white',fontWeight:'600'}}>CATEGORIES</span>
                 </DropdownToggle>
                 <DropdownMenu >
-                    <DropdownItem>
-                    Option 1
-                    </DropdownItem>
-                    <DropdownItem>
-                    Option 2
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
-                    <DropdownItem>
-                    Reset
-                    </DropdownItem>
+                    {this.renderCategoryList()}
                 </DropdownMenu>
                 </UncontrolledDropdown>          
             </Nav>
@@ -105,14 +124,12 @@ class App extends React.Component {
           </Link> */}
         
         <div className='ml-auto'>
-        
         <FaUserCog/>
+        
             
         </div>
           </Collapse>
                   
-      {/* ============================== USER SECTION START======================================= */}
-
         </Navbar>
       </div>
     );

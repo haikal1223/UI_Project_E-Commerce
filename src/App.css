@@ -1,3 +1,6 @@
+div{
+  border: 1px solid red
+}
 /* HEADER START */
 /* Dropdown */
 .category-list{
@@ -39,6 +42,14 @@
   text-align: center
 }
 /* CART SECTION END */
+/* LOGIN SECTION */
+.login{
+    background-image: url(https://images2.alphacoders.com/474/thumb-1920-474206.jpg);
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    height: 100vh
+}
 
 .logo{
   font-size: 30px;
