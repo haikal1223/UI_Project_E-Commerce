@@ -1,98 +1,77 @@
 import React, { Component } from 'react'
-import {Paper} from '@material-ui/core'
-import Loader from 'react-loader-spinner'
-import Axios from 'axios'
-import {OnRegisterSuccess} from '../../redux/Action'
-import { connect } from 'react-redux';
-import {Redirect} from 'react-router-dom'
-
+import { Redirect } from 'react-router-dom'
+import { connect } from 'react-redux'
+import { Spinner } from 'reactstrap'
+import { onUserRegister } from '../Action'
+import { Form, Button} from 'react-bootstrap'
 
 class Register extends Component {
-    state={
-        error : '',
-        loading : false
-    }
-    onBtnClickRegister = () =>{
+    onBtnRegisterClick = () => {
         var username = this.refs.username.value
+        var email = this.refs.email.value
         var password = this.refs.password.value
-        var confirm = this.refs.confirm.value
-        if(username === '' || password ===''|| confirm === ''){
-            this.setState({error : 'Semua Form Harus diisi'})
-        }else{
-            if(confirm !== password){
-                this.setState({error : 'Pasword and Confirm must be same'})
-            }else{
-                this.setState({loading : true })
-                // Ngecek username udah ada atau belum
-                Axios.get('http://localhost:2001/users?username=' + username)
-                .then((res) =>{
-                    if(res.data.length > 0){
-                        this.setState({error : 'Username has been taken',loading : false})
-                    }else{
-                        Axios.post('http://localhost:2001/users',{username,password})
-                        .then((res) =>{
-                        this.props.OnRegisterSuccess(res.data)
-                        // paramater pertama key / terserah, untuk get data
-                        localStorage.setItem('terserah', res.data.username)
-                        this.setState({loading : false})
-                        })
-                        .catch((err) =>{
-                            console.log(err);
-                            
-                        })
-                    }            
-                })
-                .catch((err) =>{
-                    console.log(err);
-                    
-                })
-            }
+        console.log(this.props.role)
+        this.props.onUserRegister({username, email, password})
+    }
 
+    renderError = () => {
+        if(this.props.error.length > 0) {
+            return <p className='alert alert-danger'>{this.props.error}</p>
         }
+    }
 
+    renderButton = () => {
+        if(this.props.loading) {
+            return <Spinner color='primary' />
+        }
+        return <input type="button" name="submit" id="submit" className="submit" defaultValue="Register" onClick={this.onBtnRegisterClick} />
     }
-    closeError = () => {
-        this.setState({error : ''})
-    }
-    render(){
-        if(this.props.user.username !== ''){
-            return(
-                <Redirect to='/' />
+
+    render() {
+        if(this.props.username === '') {
+            
+            return (
+                <div className='container' style={{marginTop: 70}}>
+                   <Form>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" placeholder="Enter email" ref='email'/>
+                        <Form.Text className="text-muted">
+                        We'll never share your email with anyone else.
+                        </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>username</Form.Label>
+                        <Form.Control type="text" placeholder="username" ref="username" />
+                    </Form.Group>
+                    
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" ref="password" />
+                    </Form.Group>
+                  
+                   <div>
+                   {this.renderError()}
+                   </div>
+                   <div className='form-submit'>
+                   {this.renderButton()}
+                   </div>
+                    </Form>
+                </div>
             )
         }
-        return(
-            <div className = 'container bg-register'>
-                <div className = 'row justify-content-center mt-5'>
-                    <div className = 'container'>
-                        <Paper>
-                        <h1>Register</h1>
-                        <input className='form-control mt-3' ref='username' type='text' placeholder='Username' />
-                        <input className='form-control mt-3' ref='password' type='password' placeholder='Password' />
-                        <input className='form-control mt-3' ref='confirm'  type='password' placeholder='Confirm Password'/>
-                        {this.state.error === '' ? null : 
-                        <div className='alert alert-danger mt-3'>{this.state.error} <span style={{
-                            fontWeight : 'bold', cursor : 'pointer', float : 'right'
-                        }} onClick={this.closeError}> x
-            
-                        </span>
-                        </div>}
-                        {this.state.loading === true ? 
-                        <Loader type='ThreeDots' color = 'black' width = '40px' /> :
-                        <input type='button' className='btn btn-primary mt-3 mb-2 ' value='Register Now'
-                        onClick={this.onBtnClickRegister}/>}
-                        
-                        </Paper>
-                    </div>
-                </div>
-
-            </div>
-        )
+        return <Redirect to='/waitingverification' />
     }
 }
 
-const mapStateToProps = (state) =>{
-    return{
-        user : state.user
+const mapStateToProps = (state) => {
+    return { 
+        username: state.auth.username, 
+        loading: state.auth.loading,
+        error: state.auth.loading,
+        role: state.auth.roleid
     }
 }
-export default connect(mapStateToProps,{OnRegisterSuccess}) (Register)
+
+export default connect(mapStateToProps, {onUserRegister})(Register)

@@ -41,7 +41,10 @@ class JumbotronSliders extends Component {
         return (
             <div className='pt-5'>
         <Slider {...settings}>
-          {this.onRenderSlider()}
+          {/* {this.onRenderSlider()} */}
+          <div>
+                    <img src={'https://mspoweruser.com/wp-content/uploads/2018/11/razer-banner-for-usssss.jpg'} alt='Gambar' style={{width: 1400, height: 600}} />
+                </div>
         </Slider>
             </div>
         )

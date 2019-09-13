@@ -5,11 +5,12 @@ import "bootstrap/dist/css/bootstrap.min.css"
 import App from './App';
 import * as serviceWorker from './serviceWorker'
 import {BrowserRouter} from 'react-router-dom'
-import {createStore} from 'redux'
+import {createStore, applyMiddleware} from 'redux'
 import {Provider} from 'react-redux'
-import Reducer from './redux/Reducer'
+import ReduxThunk from 'redux-thunk'
+import Reducer from './Reducer'
 
-const store = createStore(Reducer)
+const store = createStore(Reducer,{},applyMiddleware(ReduxThunk))
 
 ReactDOM.render(
     <Provider store={store}>

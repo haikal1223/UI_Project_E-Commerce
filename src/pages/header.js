@@ -20,6 +20,9 @@ import Axios from 'axios';
 import { API_URL } from '../API_URL';
 import { Box } from '@material-ui/core';
 import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
+import { onSearchBox, onSearchBoxFalse} from '../Action/searchBox'
+import {onUserLogOut} from '../Action'
 
 
 class App extends React.Component {
@@ -28,7 +31,9 @@ class App extends React.Component {
     cartAddOn: 86,
     categoryDrop: [],
     brandDrop: [],
-    searched: []
+    searched: [],
+    search: false,
+    searchtext: ''
   }
   componentDidMount(){
     Axios.get('http://localhost:1999/category/getcategory')
@@ -46,21 +51,55 @@ class App extends React.Component {
     .catch((err) => {
       console.log(err)
     })
-
-    Axios.get(API_URL + `/search/getsearched?search=${this.refs.search-Box.value}`)
-    .then((res) => {
-      this.setState({searched:res.data})
-    })
-    .catch((err) => {
-      console.log(err)
-    })
   }
   
-  
+  onBtnLogOutClick = () =>{
+    this.props.onUserLogOut()
+}
+
   toggle() {
     this.setState({
       isOpen: !this.state.isOpen
     });
+  }
+
+
+  renderDropdownUserorAdmin = () => {
+    if(this.props.username !=='' && this.props.roleid === 2){
+      return(
+        <div>
+        <Link to='/login'>
+        <DropdownItem>Login</DropdownItem>
+        </Link>
+        <DropdownItem onClick={this.onBtnLogOutClick}>LogOut</DropdownItem>
+
+        </div>
+      )
+    }else if (this.props.username !=='' && this.props.roleid === 1) {
+      return(
+        <div>
+        <DropdownItem>{this.props.username}</DropdownItem>
+        <Link to='/admin'>
+        <DropdownItem>Admin</DropdownItem>
+        </Link>
+        <DropdownItem onClick={this.onBtnLogOutClick}>LogOut</DropdownItem>
+
+        </div>
+      )
+    }
+    else{
+      return(
+        <div>
+        <Link to='/login'>
+        <DropdownItem>Login</DropdownItem>
+        </Link>
+        <Link to='/register'>
+        <DropdownItem>Register</DropdownItem>
+        </Link>
+
+        </div>
+      )
+    }
   }
 
 renderBrandList = () => {
@@ -83,21 +122,17 @@ renderBrandList = () => {
       })
   }
 
+  onSearchBox = () => {
+    var searched = this.refs.search.value
+    this.setState({searchtext: searched})
+    
+  }
+
   render() {
-  
+    
     return (
       <div>
-        <div  className='search-icon'>
-        <GoSearch /> 
-        <input type='search' refs='search-box' ref='search-box' placeholder='What do you need ?' />
-        </div>
-        <Link to='/mycart'>
-          <IoIosCart className='flex-center cart-icon'   />
-            {this.state.cartAddOn < 1 ? null :
-            <span className='cart-notif'>{this.state.cartAddOn}</span>
-          }
-        </Link>
-        <Navbar color="success" light expand="md" style={{position:'fixed', zIndex:'1', width: '100%'}} >
+        <Navbar color="success" light expand="md" style={{position:'fixed', zIndex:'1', width: '100%', top:0,right: 0, left: 0}} >
           <Link to='/'>
           <NavbarBrand className='logo' >Furion</NavbarBrand>
           </Link>
@@ -127,18 +162,30 @@ renderBrandList = () => {
                 </UncontrolledDropdown>          
             </Nav>
           </div>
-          {/* <Link style={{textDecoration:'none'}}>
-            <Nav>
-              <NavItem>
-                <NavLink className='on-sale' style={{cursor: 'pointer', borderRadius : '5px', color:'white', backgroundColor: 'red',fontWeight: '600'}}>SALE</NavLink>
-              </NavItem>
-            </Nav>
-          </Link> */}
-        
-        <div className='ml-auto'>
-        <FaUserCog/>
-            
-        </div>
+          <div  className='search-icon'>
+            <a href ={`/showcase?showsearched=${this.state.searchtext}`} >
+              {console.log(this.props.searchtext)}
+          <GoSearch onClick={this.onSearchBox} /> 
+            </a>
+          <input type='search'  ref='search' placeholder='What do you need ?'  />
+          
+          </div>
+          <Link to='/mycart'>
+            <IoIosCart className=' cart-icon' style={{position:'absolute', right:120, top: 13}}  />
+              {this.state.cartAddOn < 1 ? null :
+              <span className='cart-notif' style={{position:'absolute',right: 115, top: 10 }}>{this.state.cartAddOn}</span>
+            }
+          </Link>
+
+        <UncontrolledDropdown nav inNavbar style={{position:'absolute', right: 20, top: -15}}>
+                <DropdownToggle nav caret>
+                  <FaUserCog className='ml-auto user-dropdown' />
+                  
+                </DropdownToggle>
+                <DropdownMenu right >
+                {this.renderDropdownUserorAdmin()}
+                </DropdownMenu>
+                </UncontrolledDropdown>  
           </Collapse>
                   
         </Navbar>
@@ -149,8 +196,12 @@ renderBrandList = () => {
 
 const mapStateToProps = (state) => {
   return{
-    
+      searchBoxTrue : state.searchBox,
+      t: state.searchbox.searchtext,
+      username: state.auth.username,
+      roleid: state.auth.roleid
+
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps,{onSearchBox,onSearchBoxFalse, onUserLogOut})(App)

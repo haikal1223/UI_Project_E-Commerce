@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
-import { Table } from 'reactstrap'
+import { Table,Button } from 'reactstrap'
 import Axios from 'axios';
+import SideNavBar from './AdminSideBar'
 
 class AdminAddProduct extends Component {
     state = {
@@ -14,6 +15,7 @@ class AdminAddProduct extends Component {
         captionEdit : ''
     }
 
+
     componentDidMount() {
         Axios.get(`http://localhost:1999/product/allproduct`)
         .then((res) => {
@@ -24,7 +26,7 @@ class AdminAddProduct extends Component {
         })
     }
 
-
+// ===================================== RENDER START ================================================
     renderListProduct = () => {
         return this.state.listPost.map((val) => {
                 return (
@@ -37,19 +39,22 @@ class AdminAddProduct extends Component {
                         <td>{val.brand}</td>
                         <td>{val.images}</td>
                         <td>{val.stock}</td>
+                        <td><Button color='primary' > Edit  </Button></td>
+                        <td><Button color='danger' > Delete  </Button></td>
                         
                     </tr>
                 )
             
         })
     }
-
+// =================================== RENDER END ==============================================
     render() {
         return (
-            <div className='container' style={{paddingTop: '80px'}}>
-                <div className='text-center mt-5 '>
+            <div className='row' style={{marginTop: 70}}>
+                <SideNavBar/>
+                <div className='text-center mt-5 ml-3'>
                     <h1 className='mb-5'> Add Products </h1>
-                     <Table  bordered>
+                     <Table  striped bordered>
                          <thead>
                              <tr>
                                  <th>ID</th>
@@ -60,6 +65,7 @@ class AdminAddProduct extends Component {
                                  <th>BRAND</th>
                                  <th>IMAGE</th>
                                  <th>STOCK</th>
+                                 <th colSpan='2'>ACTION</th>
                              </tr>
                          </thead>
                          <tbody>
