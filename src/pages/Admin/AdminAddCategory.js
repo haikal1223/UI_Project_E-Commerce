@@ -129,7 +129,7 @@ class AdminAddCategory extends Component {
                                 </td>
                                <td></td>
                                <td>
-                               <input type='button' className='btn btn-success' value='ADD ' onClick={this.onBtnAddClick}/>
+                               <input type='button' className='btn btn-success' value='ADD' onClick={this.onBtnAddClick}/>
                                </td>
                                <td></td>
                            </tr>

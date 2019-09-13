@@ -239,7 +239,7 @@ class AdminAddBrand extends Component {
                                     </td>
                                    <td></td>
                                    <td>
-                                   <input type='button' className='btn btn-success' value='ADD' onClick={this.onBtnBrandAddClick}/>
+                                   <input type='button' className='btn btn-success' value='ADD ' onClick={this.onBtnBrandAddClick}/>
                                    </td>
                                    <td></td>
                                </tr>
