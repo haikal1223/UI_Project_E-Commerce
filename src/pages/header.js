@@ -62,7 +62,7 @@ class App extends React.Component {
   }
   
   onBtnLogOutClick = () =>{
-    this.props.onUserLogOut()
+    this.props.onUserLogOut();
 }
 
   toggle() {
@@ -85,7 +85,7 @@ class App extends React.Component {
         <Link to='/login'>
         <DropdownItem>Login</DropdownItem>
         </Link>
-        <DropdownItem onClick={this.onBtnLogOutClick}>LogOut</DropdownItem>
+        <DropdownItem onClick={this.onBtnLogOutClick} href='/'>LogOut</DropdownItem>
 
         </div>
       )
@@ -96,7 +96,7 @@ class App extends React.Component {
         <Link to='/admin'>
         <DropdownItem>Admin</DropdownItem>
         </Link>
-        <DropdownItem onClick={this.onBtnLogOutClick}>LogOut</DropdownItem>
+        <DropdownItem onClick={this.onBtnLogOutClick} href='/'>LogOut</DropdownItem>
 
         </div>
       )
@@ -141,7 +141,21 @@ renderBrandList = () => {
     this.setState({searchtext: searched})
     
   }
-
+// =================================================== RENDER CART START =====================================
+        onRenderCart = () => {
+          return this.props.cart.map((item) => {
+            return(
+              <tr>
+                <td>{item.id}</td>
+                <td>{item.name}</td>
+                <td>{item.qty}</td>
+                <td>{item.price}</td>
+                <td>{item.totalprice}</td>
+              </tr>
+            )
+          })
+        }
+// ===========================================================================================================
   render() {
     
     return (
@@ -193,13 +207,22 @@ renderBrandList = () => {
               </ModalHeader>
               <ModalBody>
               {console.log(this.props.cart)}
-              <Table>
+              <Table bordered dark striped >
                 <thead>
                   <tr>
-                    <th></th>
-                    <th></th>
+                    <th>ID</th>
+                    <th>NAME</th>
+                    <th>QTY</th>
+                    <th>PRICE</th>
+                    <th>TOTAL PRICE</th>
                   </tr>
                 </thead>
+                <tbody>
+                  {this.onRenderCart()}
+                </tbody>
+                <tfoot>
+
+                </tfoot>
               </Table>
               </ModalBody>
               <ModalFooter>

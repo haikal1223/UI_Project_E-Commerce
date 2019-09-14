@@ -21,8 +21,9 @@ import {keepLogin, showCartUser} from './Action'
 class App extends React.Component{
 componentDidMount(){
   this.props.keepLogin()
-  console.log(this.props.keepLogin())
-  this.props.showCartUser()
+
+    this.props.showCartUser()
+
 }
 
   render(){
@@ -54,7 +55,8 @@ componentDidMount(){
 const mapStateToProps = (state) => {
   return{
       searchBoxTrue : state.searchbox.status,
-      searchText: state.searchbox.searchtext
+      searchText: state.searchbox.searchtext,
+      username: state.auth.username
   }
 }
 

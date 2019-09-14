@@ -21,10 +21,9 @@ const INITIAL_STATE = {
 export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case USER_LOGIN_SUCCESS :
-            console.log(state.roleId)
-            return {...INITIAL_STATE, ...action.payload, authChecked : true}
+            return {...INITIAL_STATE, ...action.payload, authChecked : true, loading: false}
         case AUTH_SYSTEM_ERROR: 
-            return {...INITIAL_STATE,error: action.payload, authChecked : true}
+            return {...INITIAL_STATE,error: action.payload, authChecked : true, loading: false}
         case AUTH_LOADING :
             return {...state, error : '', loading : true}
         case USER_LOGOUT :

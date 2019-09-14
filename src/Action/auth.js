@@ -72,7 +72,7 @@ export const keepLogin = () => {
         
         const headers = {
             headers:{
-                'Authorization' : ` ${token}`
+                'Authorization' : `Bearer ${token}`
             }
         }
         Axios.post(API_URL + '/user/keeplogin',{},headers)

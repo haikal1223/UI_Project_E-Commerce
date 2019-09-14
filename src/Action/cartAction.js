@@ -15,24 +15,27 @@ export const onBtnAddToCart = (object) => {
 
 export const showCartUser = () => {
     return(dispatch) => {
-         const token = localStorage.getItem('username')
-            
-         const headers = {
+        const token = localStorage.getItem('username')
+       
+        
+        const headers = {
             headers:{
-                'Authorization' : ` ${token}`
+                'Authorization' : `Bearer ${token}`
             }
         }
 
-        Axios.get(`${API_URL}/cart/getcart`,headers)
+        Axios.post(`${API_URL}/cart/getcart`,{}, headers)
         .then((res) => {
             console.log(res.data)
             let object = {
-                
+                    cart: res.data.cartUser,
+                    cartCount: res.data.cartCount
             }
-            dispatch({ type: ADD_TO_CARD, payload: res.data})
+            dispatch({ type: ADD_TO_CARD, payload: object})
         })
         .catch((err) => {
             console.log(err)
+            
         })
         }
     }

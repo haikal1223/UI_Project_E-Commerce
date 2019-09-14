@@ -8,3 +8,4 @@ export const SEARCH_BOX_FALSE = 'SEARCH_BOX_FALSE'
 export const SEARCH_BOX_DATA = 'SEARCH_BOX_DATA'
 
 export const ADD_TO_CARD = 'ADD_TO_CARD'
+export const ADD_ON_LOGOUT = 'ADD__ON_LOGOUT'

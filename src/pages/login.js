@@ -9,6 +9,8 @@ class Login extends Component {
     onBtnLoginClick = () => {
         var username = this.refs.username.value;
         var password = this.refs.password.value;
+        console.log(username)
+        console.log(password)
         this.props.onUserLogin({ username, password });
     }
 

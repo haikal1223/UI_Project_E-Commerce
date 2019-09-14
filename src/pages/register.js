@@ -6,6 +6,18 @@ import { onUserRegister } from '../Action'
 import { Form, Button} from 'react-bootstrap'
 
 class Register extends Component {
+    state={
+        justRegistered: false
+    }
+
+    // componentWillReceiveProps(newProps){
+    //     console.log(this.props.username)
+    //     console.log(newProps)
+    //     if(this.props.username !== newProps.username){
+    //         return <Redirect to='/waitingverification' />
+    //     }
+    // }
+
     onBtnRegisterClick = () => {
         var username = this.refs.username.value
         var email = this.refs.email.value
@@ -29,8 +41,8 @@ class Register extends Component {
 
     render() {
         if(this.props.username === '') {
-            
             return (
+                
                 <div className='container' style={{marginTop: 70}}>
                    <Form>
                     <Form.Group controlId="formBasicEmail">
@@ -41,7 +53,7 @@ class Register extends Component {
                         </Form.Text>
                     </Form.Group>
 
-                    <Form.Group controlId="formBasicPassword">
+                    <Form.Group controlId="formBasicUsername">
                         <Form.Label>username</Form.Label>
                         <Form.Control type="text" placeholder="username" ref="username" />
                     </Form.Group>
