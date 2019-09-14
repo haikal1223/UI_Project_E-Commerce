@@ -6,3 +6,5 @@ export const USER_LOGOUT = 'USER_LOGOUT'
 export const SEARCH_DEFAULT = 'SEARCH_DEFAULT'
 export const SEARCH_BOX_FALSE = 'SEARCH_BOX_FALSE'
 export const SEARCH_BOX_DATA = 'SEARCH_BOX_DATA'
+
+export const ADD_TO_CARD = 'ADD_TO_CARD'

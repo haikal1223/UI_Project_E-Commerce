@@ -7,10 +7,8 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
-    FormGroup
     } from 'reactstrap'
 import Axios from 'axios';
-import {Paper} from '@material-ui/core'
 import SideNavBar from './AdminSideBar'
 import { API_URL } from '../../API_URL';
 
@@ -197,7 +195,7 @@ class AdminAddProduct extends Component {
             return this.state.listCategory.map((item) => {
                 return (
                     <option key={item.id} value={item.id}>
-                        {item.name}
+                        {item.name.toUpperCase()}
                     </option>
                 )
             })

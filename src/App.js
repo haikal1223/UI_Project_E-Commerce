@@ -13,14 +13,16 @@ import AdminAddBrand from './pages/Admin/AdminAddBrand'
 import AdminAddCategory from './pages/Admin/AdminAddCategory'
 import TestProdCard from './component/testCard'
 import AdminAddJumbo from './pages/Admin/AdminAddJumbotron'
+import ProductDetail from './pages/ProductDetail'
 import { connect } from 'react-redux'
 import './App.css'
-import {keepLogin} from './Action'
+import {keepLogin, showCartUser} from './Action'
 
 class App extends React.Component{
 componentDidMount(){
   this.props.keepLogin()
   console.log(this.props.keepLogin())
+  this.props.showCartUser()
 }
 
   render(){
@@ -32,6 +34,7 @@ componentDidMount(){
           <Route exact path='/' component={Homepage} />
           <Route path='/login' component={Login} />
           <Route path='/showcase' component={Showcase} />
+          <Route path='/productdetail' component={ProductDetail} />
           <Route path='/admin' component={AdminMainPages} />
           <Route path='/register' component={Register} />
           <Route path='/test' component={TestCard} />
@@ -56,4 +59,4 @@ const mapStateToProps = (state) => {
 }
 
 
-export default connect(mapStateToProps,{keepLogin})(App)
+export default connect(mapStateToProps,{keepLogin, showCartUser})(App)

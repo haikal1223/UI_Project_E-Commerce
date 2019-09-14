@@ -18,11 +18,18 @@ import {IoIosCart} from 'react-icons/io'
 import { FaUserCog } from "react-icons/fa";
 import Axios from 'axios';
 import { API_URL } from '../API_URL';
-import { Box } from '@material-ui/core';
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { onSearchBox, onSearchBoxFalse} from '../Action/searchBox'
 import {onUserLogOut} from '../Action'
+import { 
+        Modal,
+        ModalHeader,
+        ModalBody,
+        ModalFooter,
+        Table
+        } from 'reactstrap'
+
 
 
 class App extends React.Component {
@@ -33,7 +40,8 @@ class App extends React.Component {
     brandDrop: [],
     searched: [],
     search: false,
-    searchtext: ''
+    searchtext: '',
+    modalOpen: false
   }
   componentDidMount(){
     Axios.get('http://localhost:1999/category/getcategory')
@@ -62,6 +70,12 @@ class App extends React.Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  // ======================= MODAL SECTION =====================
+    closeModal = () => {
+      this.setState({modalOpen:false})
+  } 
+  // ===========================================================
 
 
   renderDropdownUserorAdmin = () => {
@@ -170,12 +184,34 @@ renderBrandList = () => {
           <input type='search'  ref='search' placeholder='What do you need ?'  />
           
           </div>
-          <Link to='/mycart'>
-            <IoIosCart className=' cart-icon' style={{position:'absolute', right:120, top: 13}}  />
+          <div>
+            <IoIosCart className=' cart-icon' style={{position:'absolute', right:120, top: 13}} onClick={() => this.setState({modalOpen: true})} />
+            {/* MODAL CART START */}
+            <Modal isOpen={this.state.modalOpen} toggle={this.closeModal}>
+              <ModalHeader>
+
+              </ModalHeader>
+              <ModalBody>
+              {console.log(this.props.cart)}
+              <Table>
+                <thead>
+                  <tr>
+                    <th></th>
+                    <th></th>
+                  </tr>
+                </thead>
+              </Table>
+              </ModalBody>
+              <ModalFooter>
+
+              </ModalFooter>
+
+            </Modal>
+            {/* MODAL CART ENDS */}
               {this.state.cartAddOn < 1 ? null :
-              <span className='cart-notif' style={{position:'absolute',right: 115, top: 10 }}>{this.state.cartAddOn}</span>
+              <span className='cart-notif' style={{position:'absolute',right: 115, top: 10 }}>{this.props.cartCount}</span>
             }
-          </Link>
+          </div>
 
         <UncontrolledDropdown nav inNavbar style={{position:'absolute', right: 20, top: -15}}>
                 <DropdownToggle nav caret>
@@ -199,7 +235,9 @@ const mapStateToProps = (state) => {
       searchBoxTrue : state.searchBox,
       t: state.searchbox.searchtext,
       username: state.auth.username,
-      roleid: state.auth.roleid
+      roleid: state.auth.roleid,
+      cart: state.cart.cart,
+      cartCount: state.cart.cartCount
 
   }
 }
