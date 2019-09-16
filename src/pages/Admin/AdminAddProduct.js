@@ -17,6 +17,7 @@ class AdminAddProduct extends Component {
         listProduct : [],
         listBrand: [],
         listCategory: [],
+        // state add
         addImageFileName : 'Select Image...',
         addImageFile : undefined,
         nameAdd : '',
@@ -26,10 +27,17 @@ class AdminAddProduct extends Component {
         discountAdd:undefined,
         selectBrand: 0,
         selectCategory: 0,
+        // state edit
         selectedEditPostId : 0,
         editImageFileName : 'Select Image...',
         editImageFile : undefined,
-        captionEdit : '',
+        nameEdit : '',
+        priceEdit: undefined,
+        descEdit: '',
+        stockEdit: undefined,
+        discountEdit: undefined,
+        selectCategoryEdit: 0,
+        selectBrandEdit:0,
         modalOpen: false,
         categoryName: 'CATEGORY',
         brandName: 'BRAND'
@@ -179,6 +187,89 @@ class AdminAddProduct extends Component {
 
     
 // ==================================== ADD SECTION END ==============================================
+// ==================================== EDIT SECTION START ===========================================
+    onEditImageFileChange = (event) => {
+        if(event.target.files[0]){
+            this.setState({editImageFileName : event.target.files[0].name, editImageFile : event.target.files[0]})
+        }
+        else{
+            this.setState({editImageFileName : 'Select Image...', editImageFile: undefined})
+        }
+    }
+
+    onNameEditChange = (event) => {
+        if (event.target.value.length <= 100 ){
+            this.setState({nameEdit: event.target.value})
+        }
+    }
+
+    onPriceEditChange = (event) => {
+        if (event.target.value.length <= 100 ){
+            this.setState({priceEdit: event.target.value})
+        }
+    }
+
+    onDiscountEditChange = (e) => {
+        console.log(e.target.value)
+        this.setState({discountEdit: e.target.value})
+    }
+
+    onDescEditChange = (e) => {
+        console.log(e.target.value)
+        this.setState({descEdit: e.target.value})
+    }
+
+    onStockEditChange = (e) => {
+        console.log(e.target.value)
+        this.setState({stockEdit: e.target.value})
+    }
+
+    onSelectCategoryEditChange = (e) => {
+        console.log(e.target.value)
+        this.setState({selectCategoryEdit: e.target.value})
+    }
+
+    onSelectBrandEditChange = (e) => {
+        console.log(e.target.value)
+        this.setState({selectBrandEdit: e.target.value})
+    }
+
+    onBtnUpdatePostClick = (id) => {
+        var formData = new FormData()
+        var headers = {
+            headers:
+            {   
+                'Content-Type': 'multipart/form-data'
+            }
+        }
+
+        var data = {
+            name : this.state.nameEdit,
+            price: this.state.priceEdit,
+            description: this.state.descEdit,
+            discount:this.state.discountEdit,
+            stock:this.state.stockEdit,
+            categoryid: this.state.selectCategoryEdit,
+            brandid: this.state.selectBrandEdit
+
+        }
+
+        formData.append('image',this.state.editImageFile)
+        formData.append('data',JSON.stringify(data))
+
+        Axios.put(API_URL + "/product/editproduct/" + id, formData,headers)
+        .then((res)=>{
+            this.setState({listProduct : res.data,selectedEditPostId : 0, editImageFileName : 'Select Image...'})
+        })
+        .catch((err)=>{
+            console.log(err);
+            
+        })
+    }
+
+
+
+// ==================================== EDIT SECTION END =============================================
 
 // ==================================== RENDER ANYTHING START ========================================
         renderBrandList = () => {
@@ -208,11 +299,13 @@ class AdminAddProduct extends Component {
 // ===================================== RENDER START ================================================
     renderListProduct = () => {
         return this.state.listProduct.map((val) => {
+            if(val.id !== this.state.selectedEditPostId){
                 return (
                     <tr key={val.id}>
                         <td>{val.id}</td>
                         <td>{val.name}</td>
                         <td>{val.price}</td>
+                        <td>{val.discount}</td>
                         <td>{val.description}</td>
                         <td>{val.category}</td>
                         <td>{val.brand}</td>
@@ -220,11 +313,64 @@ class AdminAddProduct extends Component {
                         <img src={`${API_URL + val.image}`} alt={val.image} width={100} />
                         </td>
                         <td>{val.stock}</td>
-                        <td><Button color='primary' > Edit  </Button></td>
-                        <td><Button color='danger' > Delete  </Button></td>
+                        <td><Button color='primary'  
+                            onClick={()=> this.setState({
+                            selectedEditPostId : val.id,
+                            nameEdit:val.name,
+                            priceEdit: val.price,
+                            discountEdit: val.discount,
+                            descEdit: val.description,
+                            stockEdit:val.stock,
+                            })} >EDIT</Button> 
+                        </td>
+                        <td>
+                            <Button color='danger' value='DELETE' > DELETE </Button>
+                        </td>
                         
                     </tr>
                 )
+            }
+            return <tr>
+                <td>{val.id}</td>
+                <td>
+                    <input type='text' value={this.state.nameEdit} onChange={this.onNameEditChange} />
+                </td>
+                <td>
+                    <input type='number' value={this.state.priceEdit} onChange={this.onPriceEditChange} />
+                </td>
+                <td>
+                    <input type='number' value={this.state.discountEdit} onChange={this.onDiscountEditChange} />
+                </td>
+                <td>
+                    <textarea value={this.state.descEdit} onChange={this.onDescEditChange} />
+                </td>
+                <td>
+                    <select onChange={this.onSelectCategoryEditChange}>
+                        <option>{this.state.categoryName}</option>
+                        {this.renderCatList()}
+                    </select>
+                </td>
+                <td>
+                    <select onChange={this.onSelectBrandEditChange}>
+                        <option>{this.state.brandName}</option>
+                        {this.renderBrandList()}
+                    </select>
+                </td>
+                <td>
+                    <img src={`${API_URL}${val.image}`} alt={val.image} width={100}/>
+                    <CustomInput id='editImagePost' type='file' label={this.state.editImageFileName} onChange={this.onEditImageFileChange}  />  
+                </td>
+                <td>
+                    <input type='number' value={this.state.stockEdit} onChange={this.onStockEditChange} />
+                </td>
+                <td>
+                    <Button color='danger' onClick={()=> this.setState({selectedEditPostId : 0})}>CANCEL</Button>
+                </td>
+                <td>
+                    <Button color='success' onClick={()=> this.onBtnUpdatePostClick(val.id)}>SAVE</Button>
+                </td>
+                
+            </tr>
             
         })
     }
@@ -242,6 +388,7 @@ class AdminAddProduct extends Component {
                                  <th>ID</th>
                                  <th>NAME</th>
                                  <th>PRICE</th>
+                                 <th>DISCOUNT</th>
                                  <th>DESCRIPTION</th>
                                  <th>CATEGORY</th>
                                  <th>BRAND</th>

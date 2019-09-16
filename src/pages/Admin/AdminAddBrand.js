@@ -136,7 +136,7 @@ class AdminAddBrand extends Component {
         }
     }
 
-    onCaptionEditChange = (event) =>{
+    oNameEditChange = (event) =>{
         console.log(event.target.value);
         if (event.target.value.length <= 100 ){
             this.setState({nameEdit: event.target.value})
@@ -179,7 +179,7 @@ class AdminAddBrand extends Component {
                     <td>{item.id}</td>
                     <td><img src={`${API_URL + item.logo}`} alt={item.logo} width={100}/></td>
                     <td>{item.name}</td>
-                    <td><input type='button' className='btn btn-primary' value='EDIT' onClick={()=> this.setState({selectedEditPostId : item.id,captionEdit:item.caption})} /> </td>
+                    <td><input type='button' className='btn btn-primary' value='EDIT' onClick={()=> this.setState({selectedEditPostId : item.id,nameEdit:item.name})} /> </td>
                     <td><input type='button' className='btn btn-danger' value='DELETE' onClick={()=> this.onBtnDeleteClick(item.id)}/></td>
                 </tr>)
             }
@@ -193,10 +193,9 @@ class AdminAddBrand extends Component {
                           <CustomInput id='editImagePost' type='file' label={this.state.editImageFileName} onChange={this.onEditImageFileChange}  />  
                         </td>
                         <td>
-                            <textarea value={this.state.captionEdit} onChange={this.onCaptionEditChange}>
+                            <textarea value={this.state.nameEdit} onChange={this.oNameEditChange}>
                             </textarea>
                         </td>
-                        <td>{item.userId}</td>
                         <td><input type='button' className='btn btn-primary' value='CANCEL' onClick={()=> this.setState({selectedEditPostId : 0})} /></td>
                         <td><input type='button' className='btn btn-primary' value='SAVE' onClick={()=> this.onBtnUpdatePostClick(item.id)}  /></td>
                     </tr>
@@ -214,7 +213,7 @@ class AdminAddBrand extends Component {
                 <div className='container' style={{}}>
                     <center>
                         <h1> Manage Brand</h1>
-                        <Table striped bordered>
+                        <Table striped dark bordered>
                             <thead>
                                 <tr>
                                     <th>ID</th>

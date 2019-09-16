@@ -30,6 +30,8 @@ class ProductDetail extends Component {
 
     // ================================= ADD TO CART START =============================================
             onBtnAddToCart = (id,price) => {
+                console.log('dibawah ini this.props.username')
+                console.log(this.props.username)
                 if(Number(this.refs.qty.value) === 0){
                     this.setState({error:'HARAP ISI QTY'})
                 }
@@ -38,6 +40,7 @@ class ProductDetail extends Component {
                     price,
                     qty: Number(this.refs.qty.value),
                     username: this.props.username
+                    
                 }
 
                 const token = localStorage.getItem('username')

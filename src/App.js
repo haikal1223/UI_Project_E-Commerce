@@ -14,6 +14,8 @@ import AdminAddCategory from './pages/Admin/AdminAddCategory'
 import TestProdCard from './component/testCard'
 import AdminAddJumbo from './pages/Admin/AdminAddJumbotron'
 import ProductDetail from './pages/ProductDetail'
+import CheckOut from './pages/Checkout'
+import uploadPembayaran from './pages/UploadPembayaran'
 import { connect } from 'react-redux'
 import './App.css'
 import {keepLogin, showCartUser} from './Action'
@@ -22,7 +24,7 @@ class App extends React.Component{
 componentDidMount(){
   this.props.keepLogin()
 
-    this.props.showCartUser()
+    // this.props.showCartUser()
 
 }
 
@@ -45,6 +47,8 @@ componentDidMount(){
           <Route path='/adminaddcategory' component={AdminAddCategory} />
           <Route path='/testcardprod' component={TestProdCard} />
           <Route path='/adminaddjumbotron' component={AdminAddJumbo} />
+          <Route path='/checkout' component={CheckOut} />
+          <Route path='/uploadpayment' component={uploadPembayaran} />
         </Switch>
         
       </div>

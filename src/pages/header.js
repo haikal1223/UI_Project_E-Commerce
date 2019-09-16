@@ -44,7 +44,13 @@ class App extends React.Component {
     modalOpen: false
   }
   componentDidMount(){
-    Axios.get('http://localhost:1999/category/getcategory')
+    const token = localStorage.getItem('token')
+        const headers = {
+            headers: { 
+                'Authorization': `Bearer ${token}`,
+            }
+        }
+    Axios.get('http://localhost:1999/category/getcategory',headers)
     .then((res) => {
       this.setState({categoryDrop: res.data})
     })
@@ -82,9 +88,7 @@ class App extends React.Component {
     if(this.props.username !=='' && this.props.roleid === 2){
       return(
         <div>
-        <Link to='/login'>
-        <DropdownItem>Login</DropdownItem>
-        </Link>
+        <DropdownItem>{this.props.username}</DropdownItem>
         <DropdownItem onClick={this.onBtnLogOutClick} href='/'>LogOut</DropdownItem>
 
         </div>
@@ -226,7 +230,9 @@ renderBrandList = () => {
               </Table>
               </ModalBody>
               <ModalFooter>
-
+                <Link to='/checkout'>
+                <input type='button' className='btn btn-danger' value='CHECKOUT' />
+                </Link>
               </ModalFooter>
 
             </Modal>
