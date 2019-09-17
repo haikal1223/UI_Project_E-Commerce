@@ -38,7 +38,7 @@ class Login extends Component {
                                 <Paper style={{marginTop: 150}} >
                                     <h1>Login Form</h1>
                                     <input ref='username' className='form-control mt-3' type='text' placeholder='username' />
-                                    <input ref='password' className='form-control mt-3' type='text' placeholder='password' />
+                                    <input ref='password' className='form-control mt-3' type='password' placeholder='password' />
                                     <div>
                                         {this.renderError()}
                                     </div>

@@ -12,7 +12,6 @@ class ShowSelected extends Component {
         var id = this.props.location.search.split('=')[1]
         var param = this.props.location.search.split('=')[0]
         console.log(this.props.location.search)
-        this.props.onSearchBoxFalse()
         if(param === '?brand'){
             Axios.get(API_URL + '/brand/getspecifiedbrand/' + id )
             .then((res) => {
@@ -33,7 +32,7 @@ class ShowSelected extends Component {
             })
 
         } else if(param === '?showsearched'){
-            Axios.get(API_URL + `/search/getsearched?search=${this.props.searchText}` )
+            Axios.get(API_URL + `/search/getsearched?search=${this.props.location.search.split('=')[1]}` )
             .then((res) => {
                 this.setState({detailProdData: res.data})
 
@@ -53,7 +52,7 @@ class ShowSelected extends Component {
                 
             })
         }
-        console.log(this.props.location)
+        console.log(this.props.searchText)
     }
 
     
@@ -62,7 +61,7 @@ class ShowSelected extends Component {
         return this.state.detailProdData.map((item) => {
             return(
                 <div className='card-product'>
-                    <img src={`${API_URL}${item.image}`} alt='gambargan' style={{height: '250px'}} />
+                    <img src={`${API_URL}${item.images}`} alt='gambargan' style={{height: '250px'}} />
                     <p>{item.name}</p>
                     <p className='price'>{item.price}</p>
                     <p>{item.description}</p>
@@ -88,11 +87,6 @@ class ShowSelected extends Component {
         )
     }
 }
-const mapStateToProps = (state) => {
-    return {
-        searchText: state.searchbox.searchtext,
-    }
-    
-}
 
-export default connect(mapStateToProps,{onSearchBoxFalse})(ShowSelected)
+
+export default connect(null,{onSearchBoxFalse})(ShowSelected)

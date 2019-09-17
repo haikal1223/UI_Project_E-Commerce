@@ -166,11 +166,9 @@ renderBrandList = () => {
       })
   }
 
-  onSearchBox = () => {
-    var searched = this.refs.search.value
-    this.setState({searchtext: searched})
+ 
     
-  }
+  
 // =================================================== RENDER CART START =====================================
         onRenderCart = () => {
           return this.props.cart.map((item) => {
@@ -221,12 +219,12 @@ renderBrandList = () => {
                 </UncontrolledDropdown>          
             </Nav>
           </div>
+          {/* SEARCH BAR START */}
           <div  className='search-icon'>
-            <a href ={`/showcase?showsearched=${this.state.searchtext}`} >
-              {console.log(this.props.searchtext)}
-          <GoSearch onClick={this.onSearchBox} /> 
+            <a href ={`/showcase?showsearched=${this.props.inputsearch}`} >
+          <GoSearch  /> 
             </a>
-          <input type='search'  ref='search' placeholder='What do you need ?'  />
+          <input type='search' onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  />
           
           </div>
           <div>
@@ -289,8 +287,7 @@ renderBrandList = () => {
 
 const mapStateToProps = (state) => {
   return{
-      searchBoxTrue : state.searchBox,
-      t: state.searchbox.searchtext,
+      inputsearch: state.searchbox.searchtext,
       username: state.auth.username,
       roleid: state.auth.roleid,
       cart: state.cart.cart,

@@ -6,7 +6,7 @@ export default (state = INITIAL_STATE, action) => {
     switch(action.type) {
         case SEARCH_BOX_DATA:
             return {
-                ...state, status: true, searchtext: action.payload
+                ...state, searchtext: action.payload
             }
         case SEARCH_BOX_FALSE:
             return INITIAL_STATE
