@@ -17,6 +17,7 @@ class ProductDetail extends Component {
     }
 
     componentDidMount() {
+        console.log(this.props.location)
         var id = this.props.location.search.split('=')[1]
 
         Axios.get(`${API_URL}/product/productdetail/${id}`)

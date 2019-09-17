@@ -117,3 +117,9 @@ export const onUserLogOut = () => {
         type : USER_LOGOUT
     }
 }
+
+export const cartContent = (obj) => {
+    return {
+        type: ADD_TO_CARD, payload:obj
+    }
+}

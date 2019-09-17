@@ -21,7 +21,7 @@ import { API_URL } from '../API_URL';
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { onSearchBox, onSearchBoxFalse} from '../Action/searchBox'
-import {onUserLogOut} from '../Action'
+import {onUserLogOut, cartContent} from '../Action'
 import { 
         Modal,
         ModalHeader,
@@ -41,7 +41,8 @@ class App extends React.Component {
     searched: [],
     search: false,
     searchtext: '',
-    modalOpen: false
+    modalOpen: false,
+    loading: false
   }
   componentDidMount(){
     const token = localStorage.getItem('token')
@@ -67,6 +68,8 @@ class App extends React.Component {
     })
   }
   
+  
+  
   onBtnLogOutClick = () =>{
     this.props.onUserLogOut();
 }
@@ -81,6 +84,29 @@ class App extends React.Component {
     closeModal = () => {
       this.setState({modalOpen:false})
   } 
+  // ===========================================================
+
+  // ====================== BUTTON REMOVE CART =================
+      onBtnRemoveClick = (id) => {
+        var data = {
+          username: this.props.username,
+          productid:id
+        }
+        console.log('username remove')
+        console.log(data)
+
+        Axios.put(API_URL+'/cart/deletecart', data)
+        .then((res) => {
+          let object = {
+            cart: res.data.cartUser,
+            cartCount: res.data.cartCount
+    }
+      this.props.cartContent(object)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+      }
   // ===========================================================
 
 
@@ -155,6 +181,7 @@ renderBrandList = () => {
                 <td>{item.qty}</td>
                 <td>{item.price}</td>
                 <td>{item.totalprice}</td>
+                <td><input type='button' className='btn btn-danger' value='X' onClick={() => this.onBtnRemoveClick(item.productid)}/></td>
               </tr>
             )
           })
@@ -219,6 +246,7 @@ renderBrandList = () => {
                     <th>QTY</th>
                     <th>PRICE</th>
                     <th>TOTAL PRICE</th>
+                    <th>REMOVE</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -271,4 +299,4 @@ const mapStateToProps = (state) => {
   }
 }
 
-export default connect(mapStateToProps,{onSearchBox,onSearchBoxFalse, onUserLogOut})(App)
+export default connect(mapStateToProps,{onSearchBox,onSearchBoxFalse, onUserLogOut,cartContent})(App)

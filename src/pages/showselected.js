@@ -53,6 +53,7 @@ class ShowSelected extends Component {
                 
             })
         }
+        console.log(this.props.location)
     }
 
     
@@ -68,7 +69,9 @@ class ShowSelected extends Component {
                     <p>{item.stock}</p>
                     <p>{item.category}</p>
                     <p>{item.brand}</p>
-                    <p><button>Add to Cart</button></p>
+                    <a href={`/productdetail?id=${item.id}`}>
+                    <p><button>PRODUCT DETAIL</button></p>
+                    </a>
                 </div>
                        
             )
