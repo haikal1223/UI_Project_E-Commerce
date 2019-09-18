@@ -3,6 +3,7 @@ import Axios from 'axios';
 import { API_URL } from '../API_URL';
 import { connect } from 'react-redux'
 import { onSearchBoxFalse } from '../Action/searchBox'
+import numeral from 'numeral'
 
 class ShowSelected extends Component {
     state = {
@@ -46,6 +47,7 @@ class ShowSelected extends Component {
             Axios.get(API_URL + '/product/allproduct')
             .then((res) => {
                 this.setState({detailProdData: res.data})
+                console.log(res.data)
             })
             .catch((err)=>{
                 console.log(err);
@@ -61,16 +63,39 @@ class ShowSelected extends Component {
         return this.state.detailProdData.map((item) => {
             return(
                 <div className='card-product'>
-                    <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
-                    <p>{item.name}</p>
-                    <p className='price'>{item.price}</p>
-                    <p>{item.description}</p>
-                    <p>{item.stock}</p>
-                    <p>{item.category}</p>
-                    <p>{item.brand}</p>
-                    <a href={`/productdetail?id=${item.id}`}>
-                    <p><button>PRODUCT DETAIL</button></p>
-                    </a>
+                    <div>
+                        <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
+                    </div>
+                    <div>
+                        <p>{item.name}</p>
+                    </div>
+                    <div>
+                        {item.discount === 0 ?
+                         <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
+                         <div>
+                             <p className='price'><strike>{`Rp.${numeral(item.price).format('0,0.00')}`}</strike></p>
+                             <p className='discount'>{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0.00')}`}</p>
+                         </div> }
+                       
+                    </div>
+                    <div>
+                        <p>{item.description}</p>
+                    </div>
+                    <div>
+                        <p>{item.stock}</p>
+                    </div>
+                    <div>
+                        <p>{item.category}</p>    
+                    </div>
+                    <div>
+                        <p>{item.brand}</p>
+                    </div>
+                    <div>
+                        <a href={`/productdetail?id=${item.id}`}>
+                        <p><button>PRODUCT DETAIL</button></p>
+                        </a>
+                    </div>
+                    
                 </div>
                        
             )
@@ -79,8 +104,8 @@ class ShowSelected extends Component {
 
     render() {
         return (
-            <div style={{marginTop: 350}} className='row'>
-                <div className='container'>
+            <div style={{marginTop: 350}} className='container'>
+                <div className='row'>
                 {this.renderSelected()}
                 </div>
             </div>

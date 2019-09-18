@@ -86,6 +86,10 @@
   color: grey;
   font-size: 22px;
 }
+.discount {
+  font-size: 22px;
+  color: green
+}
 
 .card-product button {
   border: none;

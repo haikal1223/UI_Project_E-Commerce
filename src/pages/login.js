@@ -24,7 +24,7 @@ class Login extends Component {
         if(this.props.loading) {
             return <Spinner color='primary' />
         }
-        return <input type="button" name="submit" id="submit" className="submit" Value="Login" onClick={this.onBtnLoginClick} />
+        return <input type="button"  className="btn btn-primary" Value="Login" onClick={this.onBtnLoginClick} />
     }
     
     render() {
@@ -32,17 +32,17 @@ class Login extends Component {
             
             return (
                     <div className='login'>
-                    <div className='container'>
+                    <div className='container bg-register'>
                         <div className='row justify-content-center mt-5'>
-                            <div className='col-12'>
-                                <Paper style={{marginTop: 150}} >
+                            <div className='col-6'>
+                                <Paper style={{marginTop: 150}} className='container' >
                                     <h1>Login Form</h1>
                                     <input ref='username' className='form-control mt-3' type='text' placeholder='username' />
                                     <input ref='password' className='form-control mt-3' type='password' placeholder='password' />
                                     <div>
                                         {this.renderError()}
                                     </div>
-                                    <div>
+                                    <div style={{margin : 15, paddingBottom: 15} }>
                                         {this.renderButton()}
                                     </div>
                                     <div>
