@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import Axios from 'axios';
 import { API_URL } from '../API_URL';
+import { Divider } from '@material-ui/core';
 
 class newArrivalProducts extends Component {
     state = { 
@@ -19,8 +20,7 @@ class newArrivalProducts extends Component {
     }
 
     renderNewArrival = () => {
-        return this.state.newArrival.map((item,index) => {
-            if(index < 4){
+        return this.state.newArrival.map((item) => {
 
                 return(
                     <div className='card-product'>
@@ -37,7 +37,6 @@ class newArrivalProducts extends Component {
                     </div>
                            
                 )
-            }
         })
     }
 
@@ -45,10 +44,14 @@ class newArrivalProducts extends Component {
     render() { 
         // console.log(this.renderNewArrival())
         return ( 
-            <div style={{marginTop: 350}} className='container'>
+            <div style={{marginTop: 70}} className='container'>
+            <h1>New Arrival Products</h1>
+            <Divider/>
+            <div className='container' style={{paddingTop: 25}}>
                 <div className='row'>
                 {this.renderNewArrival()}
                 </div>
+            </div>
             </div>
          );
     }

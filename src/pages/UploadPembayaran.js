@@ -210,7 +210,7 @@ class UploadPembayaran extends Component {
                       </div>
                         : null}
                     {
-                        item.status === 'accepted by admin' || item.status === 'package received' || item.status === 'image being checked' ?
+                        item.status === 'accepted by admin' || item.status === 'package received' || item.status === 'image being checked' || item.status === 'waitingConfirmation' ?
                         <input type='button' className='btn btn-success' value='DETAILS' onClick={() => this.getDetail(item.id)} /> :
                         null
                     }

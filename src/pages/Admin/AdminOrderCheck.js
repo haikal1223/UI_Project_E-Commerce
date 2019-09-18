@@ -95,7 +95,7 @@ class AdminOrderCheck extends Component {
                             item.status === 'image being checked' ?
                             <div>
                                 <td><input type='button' className='btn btn-success'  value='Accepted' onClick={() => this.onBtnSendPackage(item.id)}/></td> 
-                                <td><input type='button' className='btn btn-danger'  value='Rejected'/></td> 
+                                <td><input type='button' className='btn btn-danger'  value='Rejected' onClick={() =>  this.onBtnRejected(item.id)}/></td> 
                             </div>
                             : null
                         }
@@ -126,6 +126,7 @@ class AdminOrderCheck extends Component {
                             <th>USERNAME</th>
                             <th>STATUS</th>
                             <th>IMAGE</th>
+                            <th>DETAIL</th>
                             <th colSpan='2'>ACTION</th>
                         </tr>
                     </thead>

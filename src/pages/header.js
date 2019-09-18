@@ -115,8 +115,9 @@ class App extends React.Component {
     if(this.props.username !=='' && this.props.roleid === 2){
       return(
         <div>
-        <DropdownItem>{this.props.username}</DropdownItem>
+        <DropdownItem disabled>{this.props.username}</DropdownItem>
         <DropdownItem onClick={this.onBtnLogOutClick} href='/'>LogOut</DropdownItem>
+        <DropdownItem href='/uploadpayment'>Payment</DropdownItem>
 
         </div>
       )
