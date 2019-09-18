@@ -1,6 +1,6 @@
 import React from 'react'
 import Navbar from './pages/header'
-import { Route, Switch,  } from 'react-router-dom'
+import { Route, Switch  } from 'react-router-dom'
 import Homepage from './pages/home'
 import Login from './pages/login'
 import Showcase from './pages/showselected'
@@ -18,6 +18,7 @@ import CheckOut from './pages/Checkout'
 import uploadPembayaran from './pages/UploadPembayaran'
 import AdminOrderChecked from './pages/Admin/AdminOrderCheck'
 import newArrivalProduct from './pages/newArrivalProduct'
+import ErrorPage from './pages/ErrorPage'
 import { connect } from 'react-redux'
 import './App.css'
 import {keepLogin, showCartUser} from './Action'
@@ -53,6 +54,7 @@ componentDidMount(){
           <Route path='/uploadpayment' component={uploadPembayaran} />
           <Route path='/adminorderchecked' component={AdminOrderChecked} />
           <Route path='/newarrivalproducts' component={newArrivalProduct} />
+          <Route path='*' component={ErrorPage} />
         </Switch>
         
       </div>
@@ -64,7 +66,8 @@ const mapStateToProps = (state) => {
   return{
       searchBoxTrue : state.searchbox.status,
       searchText: state.searchbox.searchtext,
-      username: state.auth.username
+      username: state.auth.username,
+      roleid: state.auth.roleid
   }
 }
 

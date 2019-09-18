@@ -23,8 +23,9 @@ class WaitingVerification extends Component {
                 <h2>Tolong Diperhatikan</h2>
                 <p>Silahkan mengecheck email anda untuk verifikasi account anda</p>
                 <p>
-                    Bila anda tidak mendapatkan email dari Furion
-                    harap cemas, dan click button dibawah untuk Resend
+                    Bila anda tidak mendapatkan email dari Furion,
+                    Tekan tombol Di bawah ini
+                    
                 </p>
                 <input type="button" value="Resend Email" onClick={this.onBtnResendEmailClick} />
             </div>

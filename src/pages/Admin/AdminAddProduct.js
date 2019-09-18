@@ -10,6 +10,8 @@ import {
     } from 'reactstrap'
 import Axios from 'axios';
 import SideNavBar from './AdminSideBar'
+import { connect } from 'react-redux'
+import { Redirect } from 'react-router-dom'
 import { API_URL } from '../../API_URL';
 
 class AdminAddProduct extends Component {
@@ -396,6 +398,13 @@ class AdminAddProduct extends Component {
     }
 // =================================== RENDER END ==============================================
     render() {
+        if(this.props.roleid !== 1){
+            return (
+         <Redirect to='/' />
+
+            )
+
+        }
         return (
             <div className='row' style={{marginTop: 70}}>
                 <SideNavBar/>
@@ -462,4 +471,10 @@ class AdminAddProduct extends Component {
     }
 }
 
-export default AdminAddProduct
+export const mapStateToProps = (state) => {
+    return {
+        roleid: state.auth.roleid
+    }
+}
+
+export default connect (mapStateToProps)(AdminAddProduct)

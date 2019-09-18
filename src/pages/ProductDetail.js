@@ -103,7 +103,11 @@ class ProductDetail extends Component {
                     </div>
                     <div className='d-flex flex-row'>
                     <input type='number' placeholder='qty' ref='qty'/>
-                    <input type='button' value='Add To Cart' onClick={() => this.onBtnAddToCart(item.id,item.price, item.discount)} />
+                    {this.props.roleid !== 1 ? 
+                     <input type='button' value='Add To Cart' onClick={() => this.onBtnAddToCart(item.id,item.price, item.discount)} />
+                     : null    
+                }
+                   
                     </div>
                    
                     {
@@ -140,7 +144,8 @@ class ProductDetail extends Component {
 
 const mapStateToProps = ({auth}) => {
     return {
-        username: auth.username
+        username: auth.username,
+        roleid: auth.roleid
     }
 }
 

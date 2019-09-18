@@ -67,6 +67,7 @@ class App extends React.Component {
       console.log(err)
     })
   }
+
   
   
   
@@ -257,7 +258,7 @@ renderBrandList = () => {
               </ModalBody>
               <ModalFooter>
                 <Link to='/checkout'>
-                <input type='button' className='btn btn-danger' value='CHECKOUT' />
+                <input type='button' className='btn btn-danger' value='CHECKOUT' onClick={()=> this.setState({modalOpen: false})} />
                 </Link>
               </ModalFooter>
 
