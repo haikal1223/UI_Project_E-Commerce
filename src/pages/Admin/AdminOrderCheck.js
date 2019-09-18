@@ -76,7 +76,7 @@ class AdminOrderCheck extends Component {
     // ================================================= RENDER =========================================
     renderTransaction = () => {
         return this.state.transactionList.map((item) => {     
-                // if(item.status !== 'accepted by admin'){
+                if(item.status !== 'package received'){
                     return ( <tr>
                         <td>{item.id}</td>
                         <td>{item.username}</td>
@@ -100,21 +100,16 @@ class AdminOrderCheck extends Component {
                             : null
                         }
                         {
-                            item.status === 'Shipment' ?
-                            <td colSpan='2'><p>On the Way</p></td> :
-                            null
-                        }
-                        {
                             item.status === 'accepted by admin' ?
-                            <p>Accepted gan</p> : null
+                            <p>Here comes the money</p> : null
                         }
                         {
                             item.status === 'package delivered' ?
-                            <p>Waitin User Confirmation</p> : null
+                            <p>Waiting User Confirmation</p> : null
                         }
                     </tr>
                    )
-                // }
+                }
             
         })
     }

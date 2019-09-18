@@ -98,7 +98,7 @@ class AdminAddJumbotron extends Component {
             return (<tr>
                 <td>{item.id}</td>
                 <td>
-                <img width={100} src={`${item.image}`} alt='jumbo' />
+                <img width={100} src={`${API_URL}${item.image}`} alt='jumbo' />
                 </td>
                 <td><input type='button' className='btn btn-danger' value='DELETE' onClick={()=> this.onBtnDeleteClick(item.id)}/></td>
             </tr>

@@ -189,23 +189,14 @@ class UploadPembayaran extends Component {
                                : null
                             }
                             {
-                                item.status === 'Shipment' ?
-                                <p>Barang telah Di Kirim</p>
-                                : null
-                            }
-                            {
                                 item.status === 'package received' ?
                                 <p> Thanks for shoping </p> :null
-                            }
-                            {
-                                item.status === 'package not received' ?
-                                <p>Hubungi Admin</p> : null
-                            }           
+                            }         
                             {
                                 item.status === 'package delivered' ?
                                 <div>
                                    
-                                <p>Barang telah Di Kirim</p>
+                                <p>Package it's on the way</p>
                                 </div>
                                 : null
                             }
@@ -219,7 +210,7 @@ class UploadPembayaran extends Component {
                       </div>
                         : null}
                     {
-                        item.status === 'accepted by admin' ?
+                        item.status === 'accepted by admin' || item.status === 'package received' || item.status === 'image being checked' ?
                         <input type='button' className='btn btn-success' value='DETAILS' onClick={() => this.getDetail(item.id)} /> :
                         null
                     }

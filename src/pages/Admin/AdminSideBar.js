@@ -30,6 +30,11 @@ class sideNavBar extends Component {
                     <h4>Manage Transaction</h4>
                 </div>
             </Link>
+            <Link to='/adminhistorytransaction'  style={{color: 'white '}}>
+                <div style={{paddingBottom: 20}}>
+                    <h4>History Transaction</h4>
+                </div>
+            </Link>
             
         </div>
         )
