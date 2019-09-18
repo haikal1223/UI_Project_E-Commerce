@@ -263,7 +263,7 @@ renderBrandList = () => {
               </ModalFooter>
 
             </Modal>
-            {/* MODAL CART ENDS */}
+            {/* MODAL CART ENDS 1 */}
               {this.state.cartAddOn < 1 ? null :
               <span className='cart-notif' style={{position:'absolute',right: 115, top: 10 }}>{this.props.cartCount}</span>
             }
