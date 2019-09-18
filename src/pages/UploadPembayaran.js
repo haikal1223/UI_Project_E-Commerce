@@ -99,6 +99,27 @@ class UploadPembayaran extends Component {
     }
 
     //  ==============================================================================================
+    
+    // =================================== BUTTON START ==============================================
+        onBtnPackageReceived = (id) => {
+            Axios.put(`${API_URL}/transaction/packagereceived/${id}`)
+            .then((res) => {
+                Axios.get(`${API_URL}/cart/gettransaction/` + this.props.username)
+                .then((res) => {
+                    
+                    this.setState({transaksi: res.data,imageFileName: 'Select Image...',imageFile:undefined})
+                  
+                })
+                .catch((err) => {
+                    console.log(err)
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        }
+
+    // ===============================================================================================
 
     // ================================= MODAL PROD DETAIL ==========================================
         renderModal = () => {
@@ -121,54 +142,37 @@ class UploadPembayaran extends Component {
 
     renderTransaksi = () => {
        return this.state.transaksi.map((item) => {
+        //    IF PERTAMA UNTUK UPLOAD
            if(this.state.idtransaction === item.id) {
             return (
                 <tr>
                 <td>{item.id}</td>
                 <td>
+                    
                     {
-                        item.status ==='waitingConfirmation' ?
-                        <p>Tunggu Konfirmasi Dari Admin</p>:
+                        item.status ==='waitingConfirmation'
+                         ?
+                        <p>Tunggu Konfirmasi Dari Admin</p>
+                        :
+                        item.status === 'accepted by admin' 
+                        ?
+                        <CustomInput type='file' label={this.state.imageFileName}  onChange={this.onAddImageFileChange} onClick={() => this.setState({idtransaction: item.id})}/>
+                        :
                         null
                     }
-                    {
-                        item.status === 'accepted by admin' ?
-                        <CustomInput type='file' label={this.state.imageFileName}  onChange={this.onAddImageFileChange} onClick={() => this.setState({idtransaction: item.id})}/>
-                        : null
-                     }
-                     {
-                         item.status === 'Shipment' ?
-                         <p>Barang telah Di Kirim</p>
-                         : null
-                     }
-                     {
-                         item.status === 'package received' ?
-                         <p> Thanks for shoping </p> :null
-                     }
-                     {
-                         item.status === 'package not received' ?
-                         <p>Hubungi Admin</p> : null
-                     }           
-            </td>
-          
+                </td>
             <td>{item.status.toUpperCase()}</td>
             <td>
-             {item.status === 'Shipment' ?
-               <div>
-               <input type='button' className='btn btn-success' value='Come'  />
-                    <input type='button' className='btn btn-danger' value='Dont Come'  />
-               </div>
-                 : null}
-                 {
-                     this.state.imageFile ?
-                     <input type='button' className='btn btn-success' onClick={() => this.onBtnSendImage(item.id)} value='SEND'/>
-                     : null
-                 }
+                 {this.state.imageFile ?
+                    <input type='button' className='btn btn-success' onClick={() => this.onBtnSendImage(item.id)} value='SEND'/>
+                    : null}
             </td>
         </tr>
-            )
-           }
-           if(item.status !== 'Rejected By Admin'){
+            )   
+           };
+
+        //    IF KEDUA UNTUK SETELAH DI UPLOAD
+           if(item.status !== 'Rejected By Admin'){ //jika kondisi tidak di rejected oleh admin
                return (
                    
                    <tr>
@@ -197,14 +201,21 @@ class UploadPembayaran extends Component {
                                 item.status === 'package not received' ?
                                 <p>Hubungi Admin</p> : null
                             }           
+                            {
+                                item.status === 'package delivered' ?
+                                <div>
+                                   
+                                <p>Barang telah Di Kirim</p>
+                                </div>
+                                : null
+                            }
                    </td>
                  
                    <td>{item.status.toUpperCase()}</td>
                    <td>
-                    {item.status === 'Shipment' ?
+                    {item.status === 'package delivered' ?
                       <div>
-                      <input type='button' className='btn btn-success' value='Come'  />
-                           <input type='button' className='btn btn-danger' value='Dont Come'  />
+                      <input type='button' className='btn btn-success' value='PACKAGE RECEIVED'  onClick={() => this.onBtnPackageReceived(item.id)}/>
                       </div>
                         : null}
                     {
@@ -219,7 +230,7 @@ class UploadPembayaran extends Component {
        })
     }
 
-
+// =========================================================================================
 
 
     render() { 

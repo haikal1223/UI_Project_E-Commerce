@@ -25,6 +25,12 @@ class sideNavBar extends Component {
                     <h4>Manage Jumbotron</h4>
                 </div>
             </Link>
+            <Link to='/adminorderchecked'  style={{color: 'white '}}>
+                <div style={{paddingBottom: 20}}>
+                    <h4>Manage Transaction</h4>
+                </div>
+            </Link>
+            
         </div>
         )
     }

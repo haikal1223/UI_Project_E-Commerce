@@ -20,45 +20,81 @@ class AdminOrderCheck extends Component {
         })
     }
 
-    onBtnAccepted = (id,qty) =>{
+    onBtnAccepted = (id) =>{
 
-        // Axios.put(`${API_URL}/transaction/acceptedbyadmin/${id}`)
-        // .then((res) => {
-        //     Axios.get(`${API_URL}/cart/gettransactionadmin`)
-        //     .then((res) => {
-        //         console.log(res.data)
-        //         this.setState({transactionList: res.data})
-        //     })
-        //     .catch((err) => {
-        //         console.log(err)
-        //     })
-        // })
-        // .catch((err) =>{
-
-        // })
+        Axios.put(`${API_URL}/transaction/acceptedbyadmin/${id}`)
+        .then((res) => {
+            Axios.get(`${API_URL}/cart/gettransactionadmin`)
+            .then((res) => {
+                console.log(res.data)
+                this.setState({transactionList: res.data})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
     }
 
+    onBtnRejected = (id) => {
+        Axios.put(`${API_URL}/transaction/rejectedbyadmin/${id}`)
+        .then((res) => {
+            Axios.get(`${API_URL}/cart/gettransactionadmin`)
+            .then((res) => {
+                console.log(res.data)
+                this.setState({transactionList: res.data})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+    }
+
+    onBtnSendPackage = (id) => {
+        Axios.put(`${API_URL}/transaction/packagedelivered/${id}`)
+        .then((res) => {
+            Axios.get(`${API_URL}/cart/gettransactionadmin`)
+            .then((res) => {
+                console.log(res.data)
+                this.setState({transactionList: res.data})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+        })
+        .catch((err) =>{
+            console.log(err)
+        })
+    }
+
+    
+    // ================================================= RENDER =========================================
     renderTransaction = () => {
         return this.state.transactionList.map((item) => {     
-                if(item.status !== 'accepted by admin'){
+                // if(item.status !== 'accepted by admin'){
                     return ( <tr>
                         <td>{item.id}</td>
                         <td>{item.username}</td>
                         <td>{item.status}</td>
-                        <td>{item.image}</td>
+                        <td><img src={`${API_URL}${item.image_upload}`} width={100} alt='image' /></td>
                         {
                             item.status === 'waitingConfirmation' ?
                             <div>
         
                                 <td><input type='button' className='btn btn-success'  value='Accepted' onClick={() => this.onBtnAccepted(item.id)}/></td> 
-                                <td><input type='button' className='btn btn-danger'  value='Rejected'/></td> 
+                                <td><input type='button' className='btn btn-danger'  value='Rejected' onClick={() =>  this.onBtnRejected(item.id)}/></td> 
                             </div>
                             : null
                         }
                         {
                             item.status === 'image being checked' ?
                             <div>
-                                <td><input type='button' className='btn btn-success'  value='Accepted'/></td> 
+                                <td><input type='button' className='btn btn-success'  value='Accepted' onClick={() => this.onBtnSendPackage(item.id)}/></td> 
                                 <td><input type='button' className='btn btn-danger'  value='Rejected'/></td> 
                             </div>
                             : null
@@ -72,9 +108,13 @@ class AdminOrderCheck extends Component {
                             item.status === 'accepted by admin' ?
                             <p>Accepted gan</p> : null
                         }
+                        {
+                            item.status === 'package delivered' ?
+                            <p>Waitin User Confirmation</p> : null
+                        }
                     </tr>
                    )
-                }
+                // }
             
         })
     }
