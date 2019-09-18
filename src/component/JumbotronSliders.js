@@ -5,6 +5,7 @@ import Slider from 'react-slick'
 import './../../node_modules/slick-carousel/slick/slick.css'
 import './../../node_modules/slick-carousel/slick/slick-theme.css'
 import Axios from 'axios';
+import { API_URL } from '../API_URL';
 
 
   
@@ -13,16 +14,25 @@ class JumbotronSliders extends Component {
     state = {
         data: []
     }
-   
+    
+    componentDidMount(){
+        Axios.get(`${API_URL}/jumboslider/getallsliders`)
+        .then((res) => {
+            this.setState({data: res.data})
+            console.log(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
 
     onRenderSlider = () =>{
-        console.log(this.state.data)
 
         var map = this.state.data.map((val) => {
             return(
                 <div>
-                    <img src={val.img} alt='Gambar' style={{width: 1400, height: 600}} />
+                    <img src={`${API_URL}${val.image}`} alt='Gambar' style={{width: 1400, height: 600}} />
                 </div>
             )
         })
@@ -41,10 +51,10 @@ class JumbotronSliders extends Component {
         return (
             <div className='pt-5'>
         <Slider {...settings}>
-          {/* {this.onRenderSlider()} */}
-          <div>
+          {this.onRenderSlider()}
+          {/* <div>
                     <img src={'https://mspoweruser.com/wp-content/uploads/2018/11/razer-banner-for-usssss.jpg'} alt='Gambar' style={{width: 1400, height: 600}} />
-                </div>
+                </div> */}
         </Slider>
             </div>
         )

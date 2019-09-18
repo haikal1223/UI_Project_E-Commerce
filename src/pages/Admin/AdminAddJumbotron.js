@@ -16,9 +16,81 @@ class AdminAddJumbotron extends Component {
          Axios.get(`${API_URL}/jumboslider/getallsliders`)
          .then((res) => {
              this.setState({jumboList: res.data})
-             console.log(this.state.jumboList)
+             console.log(res.data)
+         })
+         .catch((err) => {
+             console.log(err)
          })
      }
+
+    // ========================== RENDER BUTTON ===========================================
+     onBtnDeleteClick = (id) => {
+         Axios.delete(`${API_URL}/jumboslider/deletesliders/${id}`)
+         .then((res) => {
+                Axios.get(`${API_URL}/jumboslider/getallsliders`)
+            .then((res) => {
+                this.setState({jumboList: res.data})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
+         })
+         .catch((err) => {
+             console.log(err)
+         })
+     }
+    //  ======================= ADD =====================================
+    onAddImageFileChange = (event) =>{
+        // console.log(document.getElementById('addImagePost').files[0])
+        console.log(event.target.files[0]);
+        var file = event.target.files[0]
+      
+        if (file) {
+            this.setState({addImageFileName :file.name, addImageFile: file })
+        }else{
+            this.setState({addImageFileName : 'Select Image...', addImageFile: undefined})
+        }
+    }
+
+     onBtnAddClick = () => {
+        if(this.state.addImageFile){
+            var formData = new FormData()
+        
+            var headers = {
+                headers : 
+                {  
+                    'Content-Type': 'multipart/form-data'
+                },
+                
+            }
+
+            
+           
+            // append mirip push di array
+            formData.append('image', this.state.addImageFile)//image harus sama kaya di backend
+
+            Axios.post(API_URL + '/jumboslider/addallsliders',formData,headers)
+            .then((res)=>{
+                Axios.get(`${API_URL}/jumboslider/getallsliders`)
+                 .then((res)=>{
+                
+                this.setState({jumboList : res.data})
+                })
+                 .catch((err)=>{
+                console.log(err);
+            
+                 })
+                 this.setState({addImageFileName: 'Select Image...', nameAdd : ''})
+                
+                
+            })
+            .catch((err)=>{
+                console.log(err);
+                
+            })
+        }
+     }
+
      // ================================================RENDER JUMBO========================================================
      renderJumboList = () => {
       return  this.state.jumboList.map((item) => {
@@ -28,7 +100,6 @@ class AdminAddJumbotron extends Component {
                 <td>
                 <img width={100} src={`${item.image}`} alt='jumbo' />
                 </td>
-                <td><input type='button' className='btn btn-primary' value='EDIT' onClick={()=> this.setState({selectedEditPostId : item.id,captionEdit:item.caption})} /> </td>
                 <td><input type='button' className='btn btn-danger' value='DELETE' onClick={()=> this.onBtnDeleteClick(item.id)}/></td>
             </tr>
             )
