@@ -270,6 +270,26 @@ class AdminAddProduct extends Component {
 
 
 // ==================================== EDIT SECTION END =============================================
+// ==================================== DELETE SECTION START =========================================
+    onBtnDeleteClick = (id) => {
+        Axios.put(`${API_URL}/product/deleteproduct/${id}`)
+        .then((res) => {
+            Axios.get(`${API_URL}/product/allproduct`)
+            .then((res)=>{
+           
+           this.setState({listProduct : res.data})
+           })
+           .catch((err) => {
+                console.log(err)
+           })
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+        
+    }
+
+// ==================================== DELETE SECTIEN ENDS ==========================================
 
 // ==================================== RENDER ANYTHING START ========================================
         renderBrandList = () => {
@@ -298,11 +318,11 @@ class AdminAddProduct extends Component {
 
 // ===================================== RENDER START ================================================
     renderListProduct = () => {
-        return this.state.listProduct.map((val) => {
+        return this.state.listProduct.map((val,i) => {
             if(val.id !== this.state.selectedEditPostId){
                 return (
                     <tr key={val.id}>
-                        <td>{val.id}</td>
+                        <td>{i+1}</td>
                         <td>{val.name}</td>
                         <td>{val.price}</td>
                         <td>{val.discount}</td>
@@ -324,7 +344,7 @@ class AdminAddProduct extends Component {
                             })} >EDIT</Button> 
                         </td>
                         <td>
-                            <Button color='danger' value='DELETE' > DELETE </Button>
+                            <Button color='danger' value='DELETE' onClick={() => this.onBtnDeleteClick(val.id)} > DELETE </Button>
                         </td>
                         
                     </tr>

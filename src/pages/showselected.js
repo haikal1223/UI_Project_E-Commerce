@@ -61,7 +61,7 @@ class ShowSelected extends Component {
         return this.state.detailProdData.map((item) => {
             return(
                 <div className='card-product'>
-                    <img src={`${API_URL}${item.image}`} alt={item.image} style={{height: '250px'}} />
+                    <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
                     <p>{item.name}</p>
                     <p className='price'>{item.price}</p>
                     <p>{item.description}</p>
