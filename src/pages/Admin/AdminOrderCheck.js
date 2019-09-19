@@ -80,6 +80,11 @@ class AdminOrderCheck extends Component {
                     return ( <tr>
                         <td>{item.id}</td>
                         <td>{item.username}</td>
+                        <td>{item.tanggal}</td>
+                        <td>{item.recipient}</td>
+                        <td>{item.adress}</td>
+                        <td>{item.city}</td>
+                        <td>{item.zip}</td>
                         <td>{item.status}</td>
                         <td><img src={`${API_URL}${item.image_upload}`} width={100} alt='image' /></td>
                         {
@@ -116,14 +121,19 @@ class AdminOrderCheck extends Component {
 
     render() { 
         return ( 
-            <div style={{marginTop: 70}} className='row'>
+            <div style={{marginTop: 70, }} className='row '>
                 <SideNavbar/>
-                <div className='container'>
-                <Table bordered striped dark>
+                <div className='container ' style={{width: '80vw'}}>
+                <Table bordered striped dark >
                     <thead>
                         <tr>
                             <th>ID TRANSAKSI</th>
                             <th>USERNAME</th>
+                            <th>DATE</th>
+                            <th>RECEPIENT</th>
+                            <th>ADRESS</th>
+                            <th>CITY</th>
+                            <th>ZIP</th>
                             <th>STATUS</th>
                             <th>IMAGE</th>
                             <th>DETAIL</th>
