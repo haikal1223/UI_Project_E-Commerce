@@ -75,7 +75,7 @@ class ShowSelected extends Component {
                          <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
                          <div>
                              <p className='price'><strike>{`Rp.${numeral(item.price).format('0,0.00')}`}</strike></p>
-                             <p className='discount'>{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0.00')}`}</p>
+                             <p className='discount'>{`Rp.${numeral(item.price-item.price * (item.discount/100)).format('0,0.00')}`}</p>
                          </div> }
                        
                     </div>
@@ -108,7 +108,7 @@ class ShowSelected extends Component {
             <div style={{marginTop: 70}} className='container'>
                 <h1>SHOWCASE</h1>
                 <Divider/>
-            <div style={{marginTop: 20}} className='container'>
+            <div style={{marginTop: 20  }} className='container'>
                 <div className='row'>
                 {this.renderSelected()}
                 </div>

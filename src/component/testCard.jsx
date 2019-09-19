@@ -1,15 +1,21 @@
 import React, { Component } from 'react'
-
+import numeral from 'numeral'
 class TestCard extends Component { 
+
+    state = {
+        angka: 0
+    }
+
+    onInputAngkaChange = (e) => {
+        var data = numeral(e.target.value).format('0,0.0000')
+        this.setState({angka: data})
+    }
+
     render() {
         return (
-            <div className="card-product" style={{marginTop:80}}>
-  <img src="https://static.bhphoto.com/images/images2500x2500/1529950038_1418026.jpg" alt="Denim Jeans" style={{height: '250px'}} />
-  <h1>Logitech G102</h1>
-  <p class="price">$19.99</p>
-  <p>Some text about the jeans..</p>
-  <p><button>Add to Cart</button></p>
-</div>
+            <div style={{marginTop: 350}}>
+                <input type='number' value={this.state.angka} onChange={this.onInputAngkaChange}/>
+            </div>
         )
     }
 }

@@ -76,7 +76,7 @@ class AdminOrderCheck extends Component {
     // ================================================= RENDER =========================================
     renderTransaction = () => {
         return this.state.transactionList.map((item) => {     
-                if(item.status !== 'package received'){
+                if(item.status !== 'package received' || item.status !== 'rejected by admin'){
                     return ( <tr>
                         <td>{item.id}</td>
                         <td>{item.username}</td>
@@ -86,7 +86,7 @@ class AdminOrderCheck extends Component {
                         <td>{item.city}</td>
                         <td>{item.zip}</td>
                         <td>{item.status}</td>
-                        <td><img src={`${API_URL}${item.image_upload}`} width={100} alt='image' /></td>
+                        <td><img src={`${API_URL}${item.image_upload}`} width={100} alt={null} /></td>
                         {
                             item.status === 'waitingConfirmation' ?
                             <div>
