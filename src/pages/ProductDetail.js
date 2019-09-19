@@ -4,6 +4,7 @@ import { API_URL } from '../API_URL';
 import { connect  } from 'react-redux'
 import { onBtnAddToCart } from '../Action/cartAction'
 import numeral from 'numeral' 
+import { Divider } from '@material-ui/core';
 class ProductDetail extends Component {
 
     state = {  
@@ -69,12 +70,15 @@ class ProductDetail extends Component {
         renderProductDetail = () => {
             return this.state.productDetail.map((item) => {
                 return <div className='row' style={{marginTop: 120}}>
-                <div className='col-md-4'  >
+                <div className='col-md-3'  >
                         <div className='card-product'>
                         <img src={API_URL + item.image} alt='test' style={{width: '250px', height: '350px'}} />
                         </div>
                 </div>
-                <div className='col-md-8'>
+                <div className='col-md-1'>
+
+                </div>
+                <div className='col-md-8' >
                     <div>
                     <h1>{item.name}</h1>
                     </div>
@@ -90,16 +94,20 @@ class ProductDetail extends Component {
 
                     </div>
                     <div>
-                    <h1>{item.category}</h1>
+                    <h3>Category: {item.category}</h3>
 
                     </div>
                     <div>
-                    <h1>{item.brand}</h1>
+                    <h3>Brand: {item.brand}</h3>
 
                     </div>
                     <div>
-                    <h1>Available Stock : {item.stock}</h1>
+                    <h3>Available Stock : {item.stock}</h3>
 
+                    </div>
+                    <Divider/>
+                    <div>
+                       <h3>Description: {item.description}</h3> 
                     </div>
                     <div className='d-flex flex-row'>
                     <input type='number' placeholder='qty' ref='qty'/>
@@ -131,7 +139,7 @@ class ProductDetail extends Component {
     render() { 
         console.log(this.state.productDetail)
         return ( 
-            <div className='container' style={{backgroundColor:'grey'}}>
+            <div className='container'>
                 <div>
             {this.renderProductDetail()}
             </div> 

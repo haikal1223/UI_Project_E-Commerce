@@ -38,9 +38,11 @@ class UploadPembayaran extends Component {
      }
 
      getDetail = (id) => {
+         
         Axios.get(`${API_URL}/cart/gettransactiondetail/${id}`)
         .then((res) => {
             this.setState({transactionDetail: res.data, transactionId: id, modalOpen: true})
+            console.log('ini get detail')
             console.log(res.data)
         })
         .catch((err) => {
