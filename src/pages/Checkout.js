@@ -11,10 +11,8 @@ class CheckOut extends Component {
     state = { 
         error: '',
         uploadBerhasil: false
-       
-
      }
-
+     
     // =================================================== RENDER ANYTHING START ==============================================
         
     // =================================================== RENDER ANYTHING END   ========================================
@@ -57,11 +55,12 @@ class CheckOut extends Component {
                 .then((res) => {
                    this.setState({uploadBerhasil: true})
                    console.log(this.state.uploadBerhasil)
+                return <Redirect to='/uploadpayment' />
+
                 })
                 .catch((err) => {
                     console.log(err)
                 })
-                return <Redirect to='/uploadpayment' />
             }
           
             

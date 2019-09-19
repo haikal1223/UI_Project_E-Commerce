@@ -5,6 +5,7 @@ import { Redirect } from 'react-router-dom'
 import Axios from 'axios';
 import { API_URL } from '../API_URL';
 import { Divider } from '@material-ui/core';
+import { Link} from 'react-router-dom'
 import numeral from 'numeral'
 
 
@@ -28,14 +29,14 @@ class Home extends React.Component{
         return this.state.newArrival.map((item,index) => {
             if(index < 4){
                 return(
-                    <div className='card-product'>
+                    <div className='card-product' style={{height:'455px'}}>
                         <div>
                             <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
                         </div>
                         <div>
                             <p>{item.name}</p>
                         </div>
-                        <div>
+                        <div style={{height: '100px'}}>
                             {item.discount === 0 ?
                              <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
                              <div>
@@ -44,19 +45,16 @@ class Home extends React.Component{
                              </div> }
                            
                         </div>
-                        <div>
-                            <p>{item.description}</p>
+                        <div style={{height:'70px'}}>
+                            <p>{item.description.split(' ').map((item,index) => { if(index < 6) return item }).join(' ')}</p>
+                        </div>
+                        <div >
+                            <p style={{color:'red',fontWeight:'bold'}}>{item.category.toUpperCase()}</p>    
                         </div>
                         <div>
-                            <p>{item.stock}</p>
+                            <p style={{color:'blue',fontWeight:'bold'}}>{item.brand.toUpperCase()}</p>
                         </div>
-                        <div>
-                            <p>{item.category}</p>    
-                        </div>
-                        <div>
-                            <p>{item.brand}</p>
-                        </div>
-                        <div>
+                        <div style={{marginTop:'35px'}}>
                             <a href={`/productdetail?id=${item.id}`}>
                             <p><button>PRODUCT DETAIL</button></p>
                             </a>
@@ -79,15 +77,18 @@ class Home extends React.Component{
                 <Jumbotron/>
                 </div>
                 <div className='container' style={{paddingTop: 50}}>
-                <h1>NEW ARRIVAL PRODUCT</h1>
+                <h1>
+                    <Link to='/newarrivalproducts' className='text-dark'>
+                    NEW ARRIVAL PRODUCT
+                    </Link>
+                </h1>
                 <Divider/>
                 <div  style={{paddingTop: 25}}>
                 <div className='row'>
                 {this.renderNewArrival()}
                 </div>
             </div>
-
-                </div>
+            </div>
             </div>
         )
     }

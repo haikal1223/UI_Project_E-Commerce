@@ -22,7 +22,7 @@ class AdminHistoryTransaction extends Component {
      
     renderTransactionList = () => {
         return this.state.transaction.map((item) => {
-            if(item.status === 'package delivered'){
+            if(item.status === 'package received'){
                 return (
                     <tr>
                         <td>{item.id}</td>

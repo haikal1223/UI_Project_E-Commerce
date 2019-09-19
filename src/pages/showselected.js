@@ -4,6 +4,7 @@ import { API_URL } from '../API_URL';
 import { connect } from 'react-redux'
 import { onSearchBoxFalse } from '../Action/searchBox'
 import numeral from 'numeral'
+import { Divider } from '@material-ui/core';
 
 class ShowSelected extends Component {
     state = {
@@ -62,7 +63,7 @@ class ShowSelected extends Component {
     renderSelected = () => {
         return this.state.detailProdData.map((item) => {
             return(
-                <div className='card-product'>
+                <div className='card-product d-inline-block mr-1 ml-1'>
                     <div>
                         <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
                     </div>
@@ -104,11 +105,16 @@ class ShowSelected extends Component {
 
     render() {
         return (
-            <div style={{marginTop: 350}} className='container'>
+            <div style={{marginTop: 70}} className='container'>
+                <h1>SHOWCASE</h1>
+                <Divider/>
+            <div style={{marginTop: 20}} className='container'>
                 <div className='row'>
                 {this.renderSelected()}
                 </div>
             </div>
+            </div>
+         
         )
     }
 }

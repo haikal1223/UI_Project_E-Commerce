@@ -13,6 +13,7 @@ import SideNavBar from './AdminSideBar'
 import { connect } from 'react-redux'
 import { Redirect } from 'react-router-dom'
 import { API_URL } from '../../API_URL';
+import numeral from 'numeral'
 
 class AdminAddProduct extends Component {
     state = {
@@ -319,6 +320,7 @@ class AdminAddProduct extends Component {
 
 
 // ===================================== RENDER START ================================================
+
     renderListProduct = () => {
         return this.state.listProduct.map((val,i) => {
             if(val.id !== this.state.selectedEditPostId){
@@ -326,9 +328,9 @@ class AdminAddProduct extends Component {
                     <tr key={val.id}>
                         <td>{i+1}</td>
                         <td>{val.name}</td>
-                        <td>{val.price}</td>
-                        <td>{val.discount}</td>
-                        <td>{val.description}</td>
+                        <td>{`Rp.${numeral(val.price).format('0,0.00')}`}</td>
+                        <td>{val.discount} %</td>
+                        <td>{val.description.split(' ').map((item,index) => { if(index < 6) return item }).join(' ')}</td>
                         <td>{val.category}</td>
                         <td>{val.brand}</td>
                         <td>

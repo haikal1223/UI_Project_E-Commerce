@@ -24,7 +24,7 @@ class UploadPembayaran extends Component {
 
      componentWillReceiveProps(newprops){ // untk dapet global state baru dengan mencheck global state yg lama dengan paramaeter newprops yang ada di komponen willreceiveprops , karena global state nya ga auto render
         if(this.props.username !== newprops.username){
-            // console.log(newprops.username)
+            console.log(newprops.username)
             Axios.get(`${API_URL}/cart/gettransaction/` + newprops.username)
             .then((res) => {
                 

@@ -23,6 +23,7 @@ import AdminHistory from './pages/Admin/AdminHistoryTransaction'
 import { connect } from 'react-redux'
 import './App.css'
 import {keepLogin, showCartUser} from './Action'
+import Footer from './component/Footer'
 
 class App extends React.Component{
 componentDidMount(){
@@ -58,6 +59,7 @@ componentDidMount(){
           <Route path='/adminhistorytransaction' component={AdminHistory} />
           <Route path='*' component={ErrorPage} />
         </Switch>
+        <Footer/>
         
       </div>
     )
