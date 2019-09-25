@@ -76,11 +76,11 @@ class AdminOrderCheck extends Component {
     // ================================================= RENDER =========================================
     renderTransaction = () => {
         return this.state.transactionList.map((item) => {     
-                if(item.status !== 'package received' || item.status !== 'rejected by admin'){
+                // if(item.status !== 'package received' && item.status !== 'rejected by admin' && item.status !== 'package delivered' && item.status !=='accepted by admin' ){
                     return ( <tr>
                         <td>{item.id}</td>
                         <td>{item.username}</td>
-                        <td>{item.tanggal}</td>
+                        <td>{item.tanggal.split('T')[0]}</td>
                         <td>{item.recipient}</td>
                         <td>{item.adress}</td>
                         <td>{item.city}</td>
@@ -114,7 +114,7 @@ class AdminOrderCheck extends Component {
                         }
                     </tr>
                    )
-                }
+                // }
             
         })
     }

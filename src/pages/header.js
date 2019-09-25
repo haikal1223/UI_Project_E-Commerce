@@ -186,52 +186,53 @@ renderBrandList = () => {
             )
           })
         }
+
+        totalPrice = (params) => {
+          if(params){
+            var totalPrice = 0
+            params.forEach((val) => {
+              totalPrice+= val.totalprice
+            })
+            return totalPrice
+          }
+        }
 // ===========================================================================================================
   render() {
     
     return (
       <div>
-        <Navbar color="success" light expand="md" style={{position:'fixed', zIndex:'1', width: '100%', top:0,right: 0, left: 0}} >
-          <Link to='/'>
-          <NavbarBrand className='logo' >Furion</NavbarBrand>
-          </Link>
-          <NavbarToggler className='ml-auto'  onClick={this.toggle}/>
-          <Collapse isOpen={this.state.isOpen} navbar >
-          <div className='mr-4'>
-          <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                <span className='category-list' style={{color: 'white',fontWeight:'600'}}>BRAND</span>
-                </DropdownToggle>
-                <DropdownMenu >
-                   {this.renderBrandList()}
-                </DropdownMenu>
-                </UncontrolledDropdown>          
-            </Nav>          
-          </div>
-          <div className= 'mr-3'>
-          <Nav className="ml-auto" navbar>
-                <UncontrolledDropdown nav inNavbar>
-                <DropdownToggle nav caret>
-                <span className='category-list' style={{color: 'white',fontWeight:'600'}}>CATEGORIES</span>
-                </DropdownToggle>
-                <DropdownMenu >
-                    {this.renderCategoryList()}
-                </DropdownMenu>
-                </UncontrolledDropdown>          
-            </Nav>
-          </div>
-          {/* SEARCH BAR START */}
-          <div  className='search-icon'>
-            <a href ={`/showcase?showsearched=${this.props.inputsearch}`} >
-          <GoSearch  /> 
-            </a>
-          <input type='search' onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  />
-          
-          </div>
-          <div>
-            <IoIosCart className=' cart-icon' style={{position:'absolute', right:120, top: 13}} onClick={() => this.setState({modalOpen: true})} />
-            {/* MODAL CART START */}
+        <div id="header">
+        {/* container */}
+        <div className="container">
+          {/* row */}
+          <div className="row">
+            {/* LOGO */}
+            <div className="col-md-3">
+              <div className="header-logo">
+                <a href="#" className="logo ">
+                  <h3 className='text-white mt-3'>FURION</h3>
+                </a>
+              </div>
+            </div>
+            {/* /LOGO */}
+            {/* SEARCH BAR */}
+            <div className="col-md-6">
+              <div className="header-search">
+                <form>
+                  <input className="input rounded-pill" style={{width: 300}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
+                  <a href ={`/showcase?showsearched=${this.props.inputsearch}`} className="search-btn" style={{ marginLeft: -20, padding: '0.7rem 1rem'}}>Search</a>
+                </form>
+              </div>
+            </div>
+            {/* /SEARCH BAR */}
+            {/* ACCOUNT */}
+            <div className="col-md-3 clearfix">
+              <div className="header-ctn">
+                {/* Wishlist */}
+                <div>
+                  <a href="#" onClick={() => this.setState({modalOpen: true})}>
+                  <i><IoIosCart className=' cart-icon'  /></i> 
+                        {/* MODAL CART START */}
             <Modal isOpen={this.state.modalOpen} toggle={this.closeModal}>
               <ModalHeader>
 
@@ -253,7 +254,11 @@ renderBrandList = () => {
                   {this.onRenderCart()}
                 </tbody>
                 <tfoot>
-
+                 <tr>
+                   <td>
+                     Rp. {this.totalPrice(this.props.cart)}
+                   </td>
+                 </tr>
                 </tfoot>
               </Table>
               </ModalBody>
@@ -264,24 +269,45 @@ renderBrandList = () => {
               </ModalFooter>
 
             </Modal>
-            {/* MODAL CART ENDS 1 */}
-              {this.state.cartAddOn < 1 ? null :
-              <span className='cart-notif' style={{position:'absolute',right: 115, top: 10 }}>{this.props.cartCount}</span>
-            }
-          </div>
-
-        <UncontrolledDropdown nav inNavbar style={{position:'absolute', right: 20, top: -15}}>
-                <DropdownToggle nav caret>
+            {/* MODAL CART ENDS 1 */}                  
+                    <span>Your Cart</span>
+                    <div className="qty">{this.props.cartCount}</div>
+                  </a>
+                </div>
+                {/* /Wishlist */}
+                {/* Cart */}
+                <div className="dropdown">
+                  <a>
                   <FaUserCog className='ml-auto user-dropdown' />
+                    <p className='text-white'>My Account</p>
+                  </a>
+                  <UncontrolledDropdown nav inNavbar style={{position:'absolute', right: 20, top: -15}}>
+                <DropdownToggle nav caret>
+              
                   
                 </DropdownToggle>
                 <DropdownMenu right >
                 {this.renderDropdownUserorAdmin()}
                 </DropdownMenu>
-                </UncontrolledDropdown>  
-          </Collapse>
-                  
-        </Navbar>
+                </UncontrolledDropdown>
+                </div>
+                {/* /Cart */}
+                {/* Menu Toogle */}
+                <div className="menu-toggle">
+                  <a href="#">
+                    <i className="fa fa-bars" />
+                    <span>Menu</span>
+                  </a>
+                </div>
+                {/* /Menu Toogle */}
+              </div>
+            </div>
+            {/* /ACCOUNT */}
+          </div>
+          {/* row */}
+        </div>
+        {/* container */}
+      </div>
       </div>
     );
   }
