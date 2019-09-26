@@ -47,7 +47,7 @@ class ShowSelected extends Component {
         else{
             Axios.get(API_URL + '/product/allproduct')
             .then((res) => {
-                this.setState({detailProdData: res.data})
+                this.setState({detailProdData: res.data.dataProduct})
                 console.log(res.data)
             })
             .catch((err)=>{
@@ -70,7 +70,7 @@ class ShowSelected extends Component {
                     <div>
                         <p>{item.name}</p>
                     </div>
-                    <div>
+                    <div style={{height: '100px'}}>
                         {item.discount === 0 ?
                          <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
                          <div>
@@ -80,10 +80,7 @@ class ShowSelected extends Component {
                        
                     </div>
                     <div>
-                        <p>{item.description}</p>
-                    </div>
-                    <div>
-                        <p>{item.stock}</p>
+                        <p>{item.description.substr(0,50)}...</p>
                     </div>
                     <div>
                         <p>{item.category}</p>    

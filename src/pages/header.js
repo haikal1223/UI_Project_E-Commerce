@@ -42,7 +42,8 @@ class App extends React.Component {
     search: false,
     searchtext: '',
     modalOpen: false,
-    loading: false
+    loading: false,
+    brandLimit: null
   }
   componentDidMount(){
     const token = localStorage.getItem('token')
@@ -62,6 +63,15 @@ class App extends React.Component {
     Axios.get(API_URL + '/brand/getbrand')
     .then((res) => {
       this.setState({brandDrop: res.data})
+    })
+    .catch((err) => {
+      console.log(err)
+    })
+
+    Axios.get(`${API_URL}/brand/getbrandhome`)
+    .then((res) => {
+      console.log(res.data)
+      this.setState({brandLimit: res.data})
     })
     .catch((err) => {
       console.log(err)
@@ -207,19 +217,19 @@ renderBrandList = () => {
           {/* row */}
           <div className="row">
             {/* LOGO */}
-            <div className="col-md-3">
+            <div className="col-md-2">
               <div className="header-logo">
-                <a href="#" className="logo ">
+                <a href="/" className="logo ">
                   <h3 className='text-white mt-3'>FURION</h3>
                 </a>
               </div>
             </div>
             {/* /LOGO */}
             {/* SEARCH BAR */}
-            <div className="col-md-6">
+            <div className="col-md-7">
               <div className="header-search">
                 <form>
-                  <input className="input rounded-pill" style={{width: 300}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
+                  <input className="input rounded-pill" style={{width: 550}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
                   <a href ={`/showcase?showsearched=${this.props.inputsearch}`} className="search-btn" style={{ marginLeft: -20, padding: '0.7rem 1rem'}}>Search</a>
                 </form>
               </div>
@@ -308,6 +318,27 @@ renderBrandList = () => {
         </div>
         {/* container */}
       </div>
+      <nav id="navigation" className='p-3 '>
+        {/* container */}
+        <div className="container">
+          {/* responsive-nav */}
+          <div id="responsive-nav">
+            {/* NAV */}
+            <ul className="main-nav nav navbar-nav flex-row " style={{textDecoration:'none', color:'black'}}>
+              <li className="active"><a href="/">Home</a></li>
+              <li><a className='text-dark' href="/newarrivalproducts">New Arrival</a></li>
+              <li><a className='text-dark' href="#">Categories</a></li>
+              <li><a href="#">Laptops</a></li>
+              <li><a href="#">Smartphones</a></li>
+              <li><a href="#">Cameras</a></li>
+              <li><a href="#">Accessories</a></li>
+            </ul>
+            {/* /NAV */}
+          </div>
+          {/* /responsive-nav */}
+        </div>
+        {/* /container */}
+      </nav>
       </div>
     );
   }

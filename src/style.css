@@ -730,6 +730,7 @@ textarea.input {
   -webkit-transform: skewX(-45deg);
   -ms-transform: skewX(-45deg);
   transform: skewX(-45deg);
+  z-index: 1;
 }
 
 .shop:after {
@@ -744,12 +745,12 @@ textarea.input {
   -webkit-transform: skewX(-45deg) translateX(-100%);
   -ms-transform: skewX(-45deg) translateX(-100%);
   transform: skewX(-45deg) translateX(-100%);
+  z-index: 1;
 }
 
 .shop .shop-img {
-  position: relative;
-  background-color: #E4E7ED;
-  z-index: -1;
+  z-index: 2;
+  float: right;
 }
 
 .shop .shop-img>img {

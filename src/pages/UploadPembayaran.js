@@ -10,6 +10,7 @@ import {
     ModalBody,
     ModalFooter,
     } from 'reactstrap'
+import numeral from 'numeral'
 
 class UploadPembayaran extends Component {
     state = { 
@@ -131,14 +132,23 @@ class UploadPembayaran extends Component {
                             <tr>
                                 <td>{i+1}</td>
                                 <td>{item.name}</td>
-                                <td>{item.harga}</td>
+                                <td>{`Rp.${numeral(item.harga * item.qty).format('0,0')}`}</td>
                                 <td>{item.qty}</td>
-                                
+
                             </tr>
                         )
                 })
                 return jsx
             }
+        }
+
+        renderTotal = () => {
+            var total = 0
+
+            this.state.transactionDetail.forEach((item) => {
+                total+= + item.harga * item.qty
+            })
+            return `Rp.${numeral(total).format('0,0')}`
         }
     // ===========================================================================
 
@@ -246,6 +256,9 @@ class UploadPembayaran extends Component {
                             <tbody>
                             {this.renderModal()}
                             </tbody>
+                            <tfoot>
+                                {this.renderTotal()}
+                            </tfoot>
                         </Table>
                     </ModalBody>
                  

@@ -50,7 +50,7 @@ class JumbotronSliders extends Component {
             
           };
         return (
-            <div className='pt-5'>
+            <div>
         <Slider {...settings}>
           {this.onRenderSlider()}
         </Slider>

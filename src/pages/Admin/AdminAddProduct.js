@@ -7,6 +7,7 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
+    Pagination, PaginationItem, PaginationLink
     } from 'reactstrap'
 import Axios from 'axios';
 import SideNavBar from './AdminSideBar'
@@ -43,14 +44,19 @@ class AdminAddProduct extends Component {
         selectBrandEdit:0,
         modalOpen: false,
         categoryName: 'CATEGORY',
-        brandName: 'BRAND'
+        brandName: 'BRAND',
+        totalPages: 0,
+        pages: 0,
+        currPages: 1
     }
 
 
     componentDidMount() {
-        Axios.get(`http://localhost:1999/product/allproduct`)
+        const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+        console.log(page)
+        Axios.get(`http://localhost:1999/product/allproduct?page=` + page)
         .then((res) => {
-            this.setState({listProduct: res.data})
+            this.setState({listProduct: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
         })
         .catch((err) => {
             console.log(err)
@@ -73,7 +79,24 @@ class AdminAddProduct extends Component {
         })
     }
 
+// ========================== RENDER PAGINATION =============================
 
+renderPagination = () => {
+    let totalButton = []
+    let listData = this.state.totalPages
+    let totalPages = Math.ceil(listData / 6)
+    for(var i = 1; i <= totalPages; i++){
+        totalButton.push(<PaginationItem className='mr-2'>
+                            <PaginationLink href={'admin?page=' + (i)}>
+                                {i}
+                            </PaginationLink>
+                        </PaginationItem>)
+                        console.log(i)
+    }
+    console.log(totalPages)
+    console.log(totalButton)
+    return totalButton
+}
 
 // ===================================== MODAL SETTINGS ==============================================
 
@@ -171,7 +194,7 @@ class AdminAddProduct extends Component {
                 Axios.get(`${API_URL}/product/allproduct`,headers)
                  .then((res)=>{
                 
-                this.setState({listProduct : res.data})
+                this.setState({listProduct : res.data.dataProduct})
                 })
                  .catch((err)=>{
                 console.log(err);
@@ -263,6 +286,13 @@ class AdminAddProduct extends Component {
         Axios.put(API_URL + "/product/editproduct/" + id, formData,headers)
         .then((res)=>{
             this.setState({listProduct : res.data,selectedEditPostId : 0, editImageFileName : 'Select Image...'})
+            Axios.get(`http://localhost:1999/product/allproduct`)
+            .then((res) => {
+                this.setState({listProduct: res.data.dataProduct})
+            })
+            .catch((err) => {
+                console.log(err)
+            })
         })
         .catch((err)=>{
             console.log(err);
@@ -280,7 +310,7 @@ class AdminAddProduct extends Component {
             Axios.get(`${API_URL}/product/allproduct`)
             .then((res)=>{
            
-           this.setState({listProduct : res.data})
+           this.setState({listProduct : res.data.dataProduct})
            })
            .catch((err) => {
                 console.log(err)
@@ -322,85 +352,88 @@ class AdminAddProduct extends Component {
 // ===================================== RENDER START ================================================
 
     renderListProduct = () => {
-        return this.state.listProduct.map((val,i) => {
-            if(val.id !== this.state.selectedEditPostId){
-                return (
-                    <tr key={val.id}>
-                        <td>{i+1}</td>
-                        <td>{val.name}</td>
-                        <td>{`Rp.${numeral(val.price).format('0,0.00')}`}</td>
-                        <td>{val.discount} %</td>
-                        <td>{val.description.split(' ').map((item,index) => { if(index < 6) return item }).join(' ')}</td>
-                        <td>{val.category}</td>
-                        <td>{val.brand}</td>
-                        <td>
-                        <img src={`${API_URL + val.image}`} alt={val.image} width={100} />
-                        </td>
-                        <td>{val.stock}</td>
-                        <td><Button color='primary'  
-                            onClick={()=> this.setState({
-                            selectedEditPostId : val.id,
-                            nameEdit:val.name,
-                            priceEdit: val.price,
-                            discountEdit: val.discount,
-                            descEdit: val.description,
-                            stockEdit:val.stock,
-                            })} >EDIT</Button> 
-                        </td>
-                        <td>
-                            <Button color='danger' value='DELETE' onClick={() => this.onBtnDeleteClick(val.id)} > DELETE </Button>
-                        </td>
-                        
-                    </tr>
-                )
-            }
-            return <tr>
-                <td>{val.id}</td>
-                <td>
-                    <input type='text' value={this.state.nameEdit} onChange={this.onNameEditChange} />
-                </td>
-                <td>
-                    <input type='number' value={this.state.priceEdit} onChange={this.onPriceEditChange} />
-                </td>
-                <td>
-                    <input type='number' value={this.state.discountEdit} onChange={this.onDiscountEditChange} />
-                </td>
-                <td>
-                    <textarea value={this.state.descEdit} onChange={this.onDescEditChange} />
-                </td>
-                <td>
-                    <select onChange={this.onSelectCategoryEditChange}>
-                        <option>{this.state.categoryName}</option>
-                        {this.renderCatList()}
-                    </select>
-                </td>
-                <td>
-                    <select onChange={this.onSelectBrandEditChange}>
-                        <option>{this.state.brandName}</option>
-                        {this.renderBrandList()}
-                    </select>
-                </td>
-                <td>
-                    <img src={`${API_URL}${val.image}`} alt={val.image} width={100}/>
-                    <CustomInput id='editImagePost' type='file' label={this.state.editImageFileName} onChange={this.onEditImageFileChange}  />  
-                </td>
-                <td>
-                    <input type='number' value={this.state.stockEdit} onChange={this.onStockEditChange} />
-                </td>
-                <td>
-                    <Button color='danger' onClick={()=> this.setState({selectedEditPostId : 0})}>CANCEL</Button>
-                </td>
-                <td>
-                    <Button color='success' onClick={()=> this.onBtnUpdatePostClick(val.id)}>SAVE</Button>
-                </td>
+        if(this.state.listProduct){
+
+            return this.state.listProduct.map((val,i) => {
+                if(val.id !== this.state.selectedEditPostId){
+                    return (
+                        <tr key={val.id}>
+                            <td>{i+1}</td>
+                            <td>{val.name}</td>
+                            <td>{`Rp.${numeral(val.price).format('0,0.00')}`}</td>
+                            <td>{val.discount} %</td>
+                            <td>{val.description.split(' ').map((item,index) => { if(index < 6) return item }).join(' ')}</td>
+                            <td>{val.category}</td>
+                            <td>{val.brand}</td>
+                            <td>
+                            <img src={`${API_URL + val.image}`} alt={val.image} width={100} />
+                            </td>
+                            <td>{val.stock}</td>
+                            <td><Button color='primary'  
+                                onClick={()=> this.setState({
+                                selectedEditPostId : val.id,
+                                nameEdit:val.name,
+                                priceEdit: val.price,
+                                discountEdit: val.discount,
+                                descEdit: val.description,
+                                stockEdit:val.stock,
+                                })} >EDIT</Button> 
+                            </td>
+                            <td>
+                                <Button color='danger' value='DELETE' onClick={() => this.onBtnDeleteClick(val.id)} > DELETE </Button>
+                            </td>
+                            
+                        </tr>
+                    )
+                }
+                return <tr>
+                    <td>{val.id}</td>
+                    <td>
+                        <input type='text' value={this.state.nameEdit} onChange={this.onNameEditChange} />
+                    </td>
+                    <td>
+                        <input type='number' value={this.state.priceEdit} onChange={this.onPriceEditChange} />
+                    </td>
+                    <td>
+                        <input type='number' value={this.state.discountEdit} onChange={this.onDiscountEditChange} />
+                    </td>
+                    <td>
+                        <textarea value={this.state.descEdit} onChange={this.onDescEditChange} />
+                    </td>
+                    <td>
+                        <select onChange={this.onSelectCategoryEditChange}>
+                            <option>{this.state.categoryName}</option>
+                            {this.renderCatList()}
+                        </select>
+                    </td>
+                    <td>
+                        <select onChange={this.onSelectBrandEditChange}>
+                            <option>{this.state.brandName}</option>
+                            {this.renderBrandList()}
+                        </select>
+                    </td>
+                    <td>
+                        <img src={`${API_URL}${val.image}`} alt={val.image} width={100}/>
+                        <CustomInput id='editImagePost' type='file' label={this.state.editImageFileName} onChange={this.onEditImageFileChange}  />  
+                    </td>
+                    <td>
+                        <input type='number' value={this.state.stockEdit} onChange={this.onStockEditChange} />
+                    </td>
+                    <td>
+                        <Button color='danger' onClick={()=> this.setState({selectedEditPostId : 0})}>CANCEL</Button>
+                    </td>
+                    <td>
+                        <Button color='success' onClick={()=> this.onBtnUpdatePostClick(val.id)}>SAVE</Button>
+                    </td>
+                    
+                </tr>
                 
-            </tr>
-            
-        })
+            })
+        }
     }
 // =================================== RENDER END ==============================================
     render() {
-        if(this.props.roleid !== 1){
+        if(this.props.roleid === 2){
             return (
          <Redirect to='/' />
 
@@ -466,6 +499,10 @@ class AdminAddProduct extends Component {
                         </tr>
                          </tfoot>
                      </Table>
+                     <Pagination
+                    className='mt-4' aria-label="Page navigation example">
+                                    {this.renderPagination()}
+                    </Pagination>
                     </center>
                 </div>
             </div>

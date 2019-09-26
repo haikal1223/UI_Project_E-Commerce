@@ -12,7 +12,11 @@ import numeral from 'numeral'
 
 class Home extends React.Component{
     state ={
-        newArrival: []
+        newArrival: [],
+        products: [],
+        pages: 0,
+        currPage: 1,
+        brandLimit: null
     }
     componentDidMount(){
         Axios.get(`${API_URL}/product/recentproduct`)
@@ -23,6 +27,35 @@ class Home extends React.Component{
         .catch((err) => {
             console.log(err)
         })
+
+        Axios.get(`${API_URL}/brand/getbrandhome`)
+        .then((res) => {
+            this.setState({brandLimit: res.data})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
+    }
+
+    renderBrandFilter = () => {
+        if(this.state.brandLimit){
+            return this.state.brandLimit.map((item) => {
+                return (
+                    <div className="col-md-4 col-xs-6">
+                        <div className="shop">
+                        <div className="shop-img">
+                            <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '150px', width:'200px'}} />
+                        </div>
+                        <div className="shop-body">
+                            <h3>{item.name}<br />Collection</h3>
+                            <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <i className="fa fa-arrow-circle-right" /></a>
+                        </div>
+                        </div>
+                    </div>
+                )
+            })
+        }
     }
     
     renderNewArrival = () => {
@@ -77,6 +110,11 @@ class Home extends React.Component{
                 <Jumbotron/>
                 </div>
                 <div className='container' style={{paddingTop: 50}}>
+                   
+                    <div className='row'>
+                        {this.renderBrandFilter()}
+                    </div>
+                     
                 <h1>
                     <Link to='/newarrivalproducts' className='text-dark'>
                     NEW ARRIVAL PRODUCT
