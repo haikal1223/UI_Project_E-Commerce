@@ -85,10 +85,10 @@ class ProductDetail extends Component {
 
                     <div>
                         {item.discount === 0 ?
-                    <h1 className=''>{`Rp. ${numeral(item.price).format('0,0.00')}`}</h1>
+                    <h1 className=''>{`Rp. ${numeral(item.price).format('0,0')}`}</h1>
                     : <div>
-                        <h1><strike>{`Rp.${numeral(item.price).format('0,0.00')}`}</strike></h1>
-                        <h1 className='text-warning'>{`Rp. ${numeral(item.price-(item.price * (item.discount/100))).format('0,0.00')}`}</h1>
+                        <h1><strike>{`Rp.${numeral(item.price).format('0,0')}`}</strike></h1>
+                        <h1 className='text-warning'>{`Rp. ${numeral(item.price-(item.price * (item.discount/100))).format('0,0')}`}</h1>
                     </div>
                 }
 

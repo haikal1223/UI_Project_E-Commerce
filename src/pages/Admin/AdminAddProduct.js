@@ -57,6 +57,8 @@ class AdminAddProduct extends Component {
         Axios.get(`http://localhost:1999/product/allproduct?page=` + page)
         .then((res) => {
             this.setState({listProduct: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
+            console.log(this.props.location)
+
         })
         .catch((err) => {
             console.log(err)
@@ -386,8 +388,8 @@ renderPagination = () => {
                         </tr>
                     )
                 }
-                return <tr>
-                    <td>{val.id}</td>
+                return <tr key={val.id}>
+                    <td>{i+1}</td>
                     <td>
                         <input type='text' value={this.state.nameEdit} onChange={this.onNameEditChange} />
                     </td>

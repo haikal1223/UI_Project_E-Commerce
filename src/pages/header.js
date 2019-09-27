@@ -55,6 +55,7 @@ class App extends React.Component {
     Axios.get('http://localhost:1999/category/getcategory',headers)
     .then((res) => {
       this.setState({categoryDrop: res.data})
+      console.log(this.props.location)
     })
     .catch((err)=>{
       console.log(err);
@@ -76,7 +77,9 @@ class App extends React.Component {
     .catch((err) => {
       console.log(err)
     })
+  
   }
+  
 
   
   
@@ -213,7 +216,7 @@ renderBrandList = () => {
       <div>
         <div id="header">
         {/* container */}
-        <div className="container">
+        <div className="container pt-4">
           {/* row */}
           <div className="row">
             {/* LOGO */}
@@ -229,7 +232,7 @@ renderBrandList = () => {
             <div className="col-md-7">
               <div className="header-search">
                 <form>
-                  <input className="input rounded-pill" style={{width: 550}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
+                  <input className="input rounded-pill" style={{width: 550, textAlign:'center'}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
                   <a href ={`/showcase?showsearched=${this.props.inputsearch}`} className="search-btn" style={{ marginLeft: -20, padding: '0.7rem 1rem'}}>Search</a>
                 </form>
               </div>

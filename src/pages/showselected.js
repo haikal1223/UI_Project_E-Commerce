@@ -5,10 +5,14 @@ import { connect } from 'react-redux'
 import { onSearchBoxFalse } from '../Action/searchBox'
 import numeral from 'numeral'
 import { Divider } from '@material-ui/core';
+import { Pagination, PaginationItem, PaginationLink} from 'reactstrap'
 
 class ShowSelected extends Component {
     state = {
-        detailProdData: []
+        detailProdData: [],
+        totalPages: 0,
+        pages: 0,
+        currPages: 1
     }
     componentDidMount() {
         var id = this.props.location.search.split('=')[1]
@@ -45,9 +49,10 @@ class ShowSelected extends Component {
             })
         }
         else{
-            Axios.get(API_URL + '/product/allproduct')
+            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+            Axios.get(API_URL + '/product/allproduct?page=' + page)
             .then((res) => {
-                this.setState({detailProdData: res.data.dataProduct})
+                this.setState({detailProdData: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
                 console.log(res.data)
             })
             .catch((err)=>{
@@ -59,11 +64,27 @@ class ShowSelected extends Component {
     }
 
     
+    renderPagination = () => {
+        let totalButton = []
+        let listData = this.state.totalPages
+        let totalPages = Math.ceil(listData / 6)
+        for(var i = 1; i <= totalPages; i++){
+            totalButton.push(<PaginationItem className='mr-2'>
+                                <PaginationLink href={'showcase?page=' + (i)}>
+                                    {i}
+                                </PaginationLink>
+                            </PaginationItem>)
+                            console.log(i)
+        }
+        console.log(totalPages)
+        console.log(totalButton)
+        return totalButton
+    }
 
     renderSelected = () => {
         return this.state.detailProdData.map((item) => {
             return(
-                <div className='card-product d-inline-block mr-1 ml-1'>
+                <div className='card-product d-inline-block mr-3 ml-2'>
                     <div>
                         <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
                     </div>
@@ -107,8 +128,14 @@ class ShowSelected extends Component {
                 <Divider/>
             <div style={{marginTop: 20  }} className='container'>
                 <div className='row'>
-                {this.renderSelected()}
+                        {this.renderSelected()} 
                 </div>
+            </div>
+            <div className='mt-2'>
+                <Pagination
+                    className='mt-4' aria-label="Page navigation example">
+                        {this.renderPagination()}
+                </Pagination>
             </div>
             </div>
          

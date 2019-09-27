@@ -7,21 +7,23 @@ import { API_URL } from '../API_URL';
 import { Divider } from '@material-ui/core';
 import { Link} from 'react-router-dom'
 import numeral from 'numeral'
+import {Search, ArrowForward} from '@material-ui/icons'
 
 
 
 class Home extends React.Component{
     state ={
         newArrival: [],
-        products: [],
+        productDiscount: [],
         pages: 0,
         currPage: 1,
         brandLimit: null
     }
     componentDidMount(){
+
         Axios.get(`${API_URL}/product/recentproduct`)
         .then((res) => {
-            this.setState({newArrival: res.data})
+            this.setState({newArrival: res.data.dataProduct})
             console.log(res.data)
         })
         .catch((err) => {
@@ -36,6 +38,14 @@ class Home extends React.Component{
             console.log(err)
         })
 
+        Axios.get(`${API_URL}/product/discountproduct`)
+        .then((res) => {
+            this.setState({productDiscount: res.data.dataProduct})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+
     }
 
     renderBrandFilter = () => {
@@ -45,11 +55,11 @@ class Home extends React.Component{
                     <div className="col-md-4 col-xs-6">
                         <div className="shop">
                         <div className="shop-img">
-                            <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '150px', width:'200px'}} />
+                            <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '300px', width:'300px'}} />
                         </div>
                         <div className="shop-body">
                             <h3>{item.name}<br />Collection</h3>
-                            <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <i className="fa fa-arrow-circle-right" /></a>
+                            <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <ArrowForward/></a>
                         </div>
                         </div>
                     </div>
@@ -62,38 +72,56 @@ class Home extends React.Component{
         return this.state.newArrival.map((item,index) => {
             if(index < 4){
                 return(
-                    <div className='card-product' style={{height:'455px'}}>
-                        <div>
-                            <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
-                        </div>
-                        <div>
-                            <p>{item.name}</p>
-                        </div>
-                        <div style={{height: '100px'}}>
-                            {item.discount === 0 ?
-                             <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
-                             <div>
-                                 <p className='price'><strike>{`Rp.${numeral(item.price).format('0,0.00')}`}</strike></p>
-                                 <p className='discount'>{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0.00')}`}</p>
-                             </div> }
+                    <div className="product ml-4">
+        <div className="product-img">
+          <img src={`${API_URL}${item.image}`} alt="" style={{width:'250px',height:'200px'}}/>
+          <div className="product-label">
+              {item.discount >0 ?  <span className="sale">-{item.discount}%</span>: null}
+            <span className="new">NEW</span>
+          </div>
+        </div>
+        <div className="product-body">
+          <p className="product-category">{item.category}</p>
+          <h3 className="product-name"><a href={`/productdetail?id=${item.id}`}>{item.name}</a></h3>
+          {item.discount === 0 ?  <h4 className="product-price">{`Rp.${numeral(item.price).format('0,0')}`} </h4>: 
+         <h4 className="product-price">{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0')}`} <del className="product-old-price">{`Rp.${numeral(item.price).format('0,0')}`}</del></h4> }
+          <div className="product-btns">
+          </div>
+        </div>
+        <div className="add-to-cart">
+         <a href={`/productdetail?id=${item.id}`}><button className="add-to-cart-btn"><Search/>Details</button></a> 
+        </div>
+      </div>
                            
-                        </div>
-                        <div style={{height:'70px'}}>
-                            <p>{item.description.split(' ').map((item,index) => { if(index < 6) return item }).join(' ')}</p>
-                        </div>
-                        <div >
-                            <p style={{color:'red',fontWeight:'bold'}}>{item.category.toUpperCase()}</p>    
-                        </div>
-                        <div>
-                            <p style={{color:'blue',fontWeight:'bold'}}>{item.brand.toUpperCase()}</p>
-                        </div>
-                        <div style={{marginTop:'35px'}}>
-                            <a href={`/productdetail?id=${item.id}`}>
-                            <p><button>PRODUCT DETAIL</button></p>
-                            </a>
-                        </div>
-                        
-                    </div>
+                )
+            }
+        })
+    }
+
+    renderDiscountProduct = () => {
+        return this.state.productDiscount.map((item,index) => {
+            if(index < 4){
+                return(
+                    <div className="product ml-4">
+        <div className="product-img">
+          <img src={`${API_URL}${item.image}`} alt="" style={{width:'250px',height:'200px'}}/>
+          <div className="product-label">
+              {item.discount >0 ?  <span className="sale">-{item.discount}%</span>: null}
+            <span className="new">NEW</span>
+          </div>
+        </div>
+        <div className="product-body">
+          <p className="product-category">{item.category}</p>
+          <h3 className="product-name"><a href={`/productdetail?id=${item.id}`}>{item.name}</a></h3>
+          {item.discount === 0 ?  <h4 className="product-price">{`Rp.${numeral(item.price).format('0,0')}`} </h4>: 
+         <h4 className="product-price">{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0')}`} <del className="product-old-price">{`Rp.${numeral(item.price).format('0,0')}`}</del></h4> }
+          <div className="product-btns">
+          </div>
+        </div>
+        <div className="add-to-cart">
+         <a href={`/productdetail?id=${item.id}`}><button className="add-to-cart-btn"><Search/>Details</button></a> 
+        </div>
+      </div>
                            
                 )
             }
@@ -106,27 +134,44 @@ class Home extends React.Component{
           }
         return(
             <div className='bg-light'>
-                <div>
-                <Jumbotron/>
-                </div>
                 <div className='container' style={{paddingTop: 50}}>
-                   
                     <div className='row'>
                         {this.renderBrandFilter()}
                     </div>
                      
-                <h1>
-                    <Link to='/newarrivalproducts' className='text-dark'>
-                    NEW ARRIVAL PRODUCT
-                    </Link>
-                </h1>
+                    <h2>
+                        <Link to='/newarrivalproducts' className='text-dark'>
+                            NEW ARRIVAL PRODUCT
+                        </Link>
+                    </h2>
                 <Divider/>
-                <div  style={{paddingTop: 25}}>
-                <div className='row'>
-                {this.renderNewArrival()}
+                    <div  style={{paddingTop: 25}}>
+                        <div className='col-md-12'>
+                            <div className='row'>
+                                {this.renderNewArrival()}
+                            </div>
+                        </div>
+                 </div>
                 </div>
-            </div>
-            </div>
+                <div style={{marginTop:65}}>
+                 <Jumbotron/>
+                </div>
+                <div className='container'>
+                    <h2>
+                        <Link to='/newarrivalproducts' className='text-dark'>
+                            SALE ITEM
+                        </Link>
+                    </h2>
+                     <Divider/>
+                    <div  style={{paddingTop: 25}}>
+                        <div className='col-md-12'>
+                            <div className='row'>
+                                {this.renderDiscountProduct()}
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         )
     }
