@@ -156,7 +156,7 @@ class Home extends React.Component{
                 <div style={{marginTop:65}}>
                  <Jumbotron/>
                 </div>
-                <div className='container'>
+                <div className='container' style={{marginTop: 35, marginBottom: 65}}>
                     <h2>
                         <Link to='/newarrivalproducts' className='text-dark'>
                             SALE ITEM

@@ -55,7 +55,7 @@ class App extends React.Component {
     Axios.get('http://localhost:1999/category/getcategory',headers)
     .then((res) => {
       this.setState({categoryDrop: res.data})
-      console.log(this.props.location)
+      console.log(this.state.categoryDrop)
     })
     .catch((err)=>{
       console.log(err);
@@ -169,6 +169,14 @@ renderBrandList = () => {
       </DropdownItem>
     )
   })
+}
+
+renderCategoryMenu = () => {
+return this.state.categoryDrop.map((item) => {
+  return( 
+    <li><a className='text-dark' href={`showcase?category=${item.id}`}>{item.name}</a></li>
+  )
+})
 }
 
   renderCategoryList = () => {
@@ -330,11 +338,7 @@ renderBrandList = () => {
             <ul className="main-nav nav navbar-nav flex-row " style={{textDecoration:'none', color:'black'}}>
               <li className="active"><a href="/">Home</a></li>
               <li><a className='text-dark' href="/newarrivalproducts">New Arrival</a></li>
-              <li><a className='text-dark' href="#">Categories</a></li>
-              <li><a href="#">Laptops</a></li>
-              <li><a href="#">Smartphones</a></li>
-              <li><a href="#">Cameras</a></li>
-              <li><a href="#">Accessories</a></li>
+              {this.renderCategoryMenu()}
             </ul>
             {/* /NAV */}
           </div>
