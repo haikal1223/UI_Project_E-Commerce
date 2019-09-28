@@ -337,7 +337,7 @@ return this.state.categoryDrop.map((item) => {
             {/* NAV */}
             <ul className="main-nav nav navbar-nav flex-row " style={{textDecoration:'none', color:'black'}}>
               <li className="active"><a href="/">Home</a></li>
-              <li><a className='text-dark' href="/newarrivalproducts">New Arrival</a></li>
+              <li><a className='text-dark' href="/showcase">All Products</a></li>
               {this.renderCategoryMenu()}
             </ul>
             {/* /NAV */}
