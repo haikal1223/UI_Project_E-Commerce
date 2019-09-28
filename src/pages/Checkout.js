@@ -7,6 +7,8 @@ import { onPaymentProcess } from '../Action'
 import Axios from 'axios';
 import { API_URL } from '../API_URL';
 import { Alert } from 'reactstrap'
+import numeral from 'numeral'
+
 class CheckOut extends Component {
     state = { 
         error: '',
@@ -23,7 +25,7 @@ class CheckOut extends Component {
             var recipient = this.refs.name.value
             var phone = this.refs.phone.value
             var adress = this.refs.adress.value
-            var city = this.refs.adress.value
+            var city = this.refs.city.value
             var zip = this.refs.zip.value
             var username = this.props.username
             var cart = this.props.cart
@@ -78,64 +80,148 @@ class CheckOut extends Component {
         }
     
         renderCart = () => {
-            
+            return this.props.cart.map((item) => {
+                return (
+                    <div className="order-col">
+                        <div>{item.qty}X {item.name}</div>
+                        <div>{`Rp.${numeral(item.totalprice).format('0,0')}`}</div>
+                    </div>
+                )
+            })
         }
 
+        renderTotalPrice = (params) => {
+            if(params){
+              var totalPrice = 0
+              params.forEach((val) => {
+                totalPrice+= val.totalprice
+              })
+              return totalPrice
+            }
+          }
+
     render() { 
-        if(this.state.uploadBerhasil !== true){
-            return ( 
-                <div className='container' style={{marginTop: 75}}>
-                    <div className='row'>
-                        <div className='col-md-7'>
-                            <Paper>
-                                <h1 style={{padding:15}}>Billing Adress</h1>
-                                <Divider variant='fullWidth' style={{border:'1px solid black',margin:15}}  />
-                                <Form style={{padding: 15, margin: 15}}>
-                                    <Form.Row>
-                                        <Form.Group as={Col} controlId="formGridRecipient">
-                                        <Form.Label>Recipient's Name</Form.Label>
-                                        <Form.Control type="text" placeholder="Enter Name" ref='name' />
-                                        </Form.Group>
-    
-                                        <Form.Group as={Col} controlId="formGridPassword">
-                                        <Form.Label>Phone Number</Form.Label>
-                                        <Form.Control type="number" placeholder="Enter Phone Number"  ref='phone'/>
-                                        </Form.Group>
-                                    </Form.Row>
-    
-                                    <Form.Group controlId="formGridAddress1">
-                                        <Form.Label>Full Address</Form.Label>
-                                        <Form.Control placeholder="Fill in the street name, house number, building number, floor or unit number "  ref='adress' />
-                                    </Form.Group>
-    
-                                    <Form.Row>
-                                        <Form.Group as={Col} controlId="formGridCity">
-                                        <Form.Label>City</Form.Label>
-                                        <Form.Control placeholder='Enter City Name' ref='city'  />
-                                        </Form.Group>
-    
-                                        <Form.Group as={Col} controlId="formGridZip">
-                                        <Form.Label>Zip Code</Form.Label>
-                                        <Form.Control type='number' placeholder='Enter Zip Code' ref='zip' />
-                                        </Form.Group>
-                                    </Form.Row>
-                                    {this.state.error !== '' ? <div>
-                                        {this.renderError()}
-                                    </div>
-                                    : null}
-                                    
-    
-                                    <input type='button' className='btn btn-primary' value='Proceed To Payment' onClick={this.onBtnPayment} />
-                                </Form>
-                            </Paper>
-    
+       return(
+           <div>
+                <div id="breadcrumb" className="section">
+                    {/* container */}
+                    <div className="container">
+                    {/* row */}
+                    <div className="row">
+                        <div className="col-md-12">
+                        <h3 className="breadcrumb-header">Checkout</h3>
+                        <ul className="breadcrumb-tree">
+                            <li><a href="/">Home</a></li>
+                            <li className="active">Checkout</li>
+                        </ul>
                         </div>
                     </div>
-    
+                    {/* /row */}
+                    </div>
+                    {/* /container */}
                 </div>
-             );
-        }
-        return <Redirect to='/uploadpayment' />
+                <div className="section">
+        {/* container */}
+        <div className="container">
+          {/* row */}
+          <div className="row">
+            <div className="col-md-7">
+              {/* Billing Details */}
+              <div className="billing-details">
+                <div className="section-title">
+                  <h3 className="title">Billing address</h3>
+                </div>
+                <div className="form-group">
+                  <input className="input" type="text" name="first-name" ref='name' placeholder="Recipient's Name" />
+                </div>
+                <div className="form-group">
+                  <input className="input" type="text" name="address" ref='adress' placeholder="Address" />
+                </div>
+                <div className="form-group">
+                  <input className="input" type="text" name="city" ref='city' placeholder="City" />
+                </div>
+                <div className="form-group">
+                  <input className="input" type="text" name="zip-code" ref='zip' placeholder="ZIP Code" />
+                </div>
+                <div className="form-group">
+                  <input className="input" type="tel" name="tel" ref='phone' placeholder="Telephone" />
+                </div>
+              </div>
+              {/* /Billing Details */}
+            </div>
+            {/* Order Details */}
+            <div className="col-md-5 order-details">
+              <div className="section-title text-center">
+                <h3 className="title">Your Order</h3>
+              </div>
+              <div className="order-summary">
+                <div className="order-col">
+                  <div><strong>PRODUCT</strong></div>
+                  <div><strong>TOTAL</strong></div>
+                </div>
+                <div className="order-products">
+                  {/* product cart */}
+                  {this.renderCart()}
+                </div>
+                <div className="order-col">
+                  <div>Shiping</div>
+                  <div><strong>FREE</strong></div>
+                </div>
+                <div className="order-col">
+                  <div><strong>TOTAL</strong></div>
+                  <div><strong className="order-total">{`Rp.${numeral(this.renderTotalPrice(this.props.cart)).format('0,0')}`}</strong></div>
+                </div>
+              </div>
+              <div className="payment-method">
+                <div className="input-radio">
+                  <input type="radio" name="payment" id="payment-1" />
+                  <label htmlFor="payment-1">
+                    <span />
+                    Direct Bank Transfer
+                  </label>
+                  <div className="caption">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  </div>
+                </div>
+                <div className="input-radio">
+                  <input type="radio" name="payment" id="payment-2" />
+                  <label htmlFor="payment-2">
+                    <span />
+                    Cheque Payment
+                  </label>
+                  <div className="caption">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  </div>
+                </div>
+                <div className="input-radio">
+                  <input type="radio" name="payment" id="payment-3" />
+                  <label htmlFor="payment-3">
+                    <span />
+                    Paypal System
+                  </label>
+                  <div className="caption">
+                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                  </div>
+                </div>
+              </div>
+              <div className="input-checkbox">
+                <input type="checkbox" id="terms" />
+                <label htmlFor="terms">
+                  <span />
+                  I've read and accept the <a href="#">terms &amp; conditions</a>
+                </label>
+              </div>
+              <a href="#" className="primary-btn order-submit">Place order</a>
+            </div>
+            {/* /Order Details */}
+          </div>
+          {/* /row */}
+        </div>
+        {/* /container */}
+      </div>
+           </div>
+       
+       )
     }
 }
 
