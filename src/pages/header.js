@@ -229,9 +229,9 @@ return this.state.categoryDrop.map((item) => {
           <div className="row">
             {/* LOGO */}
             <div className="col-md-2">
-              <div className="header-logo">
-                <a href="/" className="logo ">
-                  <h3 className='text-white mt-3'>FURION</h3>
+              <div className="header-logo" >
+                <a href="/" className="logo">
+                  <h3 className='text-white'>FURION</h3>
                 </a>
               </div>
             </div>
@@ -284,9 +284,7 @@ return this.state.categoryDrop.map((item) => {
               </Table>
               </ModalBody>
               <ModalFooter>
-                <Link to='/checkout'>
-                <input type='button' className='btn btn-danger' value='CHECKOUT' onClick={()=> this.setState({modalOpen: false})} />
-                </Link>
+                 <a href='/checkout'> <input type='button' className='btn btn-danger' value='CHECKOUT' onClick={()=> this.setState({modalOpen: false})} /></a>
               </ModalFooter>
 
             </Modal>

@@ -6,13 +6,17 @@ import { onSearchBoxFalse } from '../Action/searchBox'
 import numeral from 'numeral'
 import { Divider } from '@material-ui/core';
 import { Pagination, PaginationItem, PaginationLink} from 'reactstrap'
+import {Search} from '@material-ui/icons'
+
 
 class ShowSelected extends Component {
     state = {
         detailProdData: [],
         totalPages: 0,
         pages: 0,
-        currPages: 1
+        currPages: 1,
+        totalPagesCat: 0,
+        pagesCat: 0
     }
     componentDidMount() {
         var id = this.props.location.search.split('=')[1]
@@ -28,9 +32,10 @@ class ShowSelected extends Component {
                 
             })
         }else if (param === '?category'){
-            Axios.get(API_URL + '/category/getspesificcategories/' + id )
+            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+            Axios.get(`${API_URL}/category/getspesificcategories/${id}?${page}` )
             .then((res) => {
-                this.setState({detailProdData: res.data})
+                this.setState({detailProdData: res.data.dataProduct,totalPagesCat: res.data.totalPagesCat, pagesCat: res.data.pagesCat})
             })
             .catch((err)=>{
                 console.log(err);
@@ -81,43 +86,51 @@ class ShowSelected extends Component {
         return totalButton
     }
 
+    renderPaginationCategories = () => {
+        var id = this.props.location.search.split('=')[1]        
+        let totalButton = []
+        let listData = this.state.totalPagesCat
+        let totalPages = Math.ceil(listData / 6)
+        for(var i = 1; i <= totalPages; i++){
+            totalButton.push(<PaginationItem className='mr-2'>
+                                <PaginationLink href={'showcase?category=' + id + '&page=' +(i)}>
+                                    {i}
+                                </PaginationLink>
+                            </PaginationItem>)
+                            console.log(i)
+        }
+        console.log(totalPages)
+        console.log(totalButton)
+        return totalButton
+    }
+
+
     renderSelected = () => {
-        return this.state.detailProdData.map((item) => {
-            return(
-                <div className='card-product d-inline-block mr-3 ml-2'>
-                    <div>
-                        <img src={`${API_URL}${item.image}`} alt={item.image} style={{width:'250px',height:'120px'}} />
-                    </div>
-                    <div>
-                        <p>{item.name}</p>
-                    </div>
-                    <div style={{height: '100px'}}>
-                        {item.discount === 0 ?
-                         <p className='price'>{`Rp.${numeral(item.price).format('0,0.00')}`}</p> :
-                         <div>
-                             <p className='price'><strike>{`Rp.${numeral(item.price).format('0,0.00')}`}</strike></p>
-                             <p className='discount'>{`Rp.${numeral(item.price-item.price * (item.discount/100)).format('0,0.00')}`}</p>
-                         </div> }
-                       
-                    </div>
-                    <div>
-                        <p>{item.description.substr(0,50)}...</p>
-                    </div>
-                    <div>
-                        <p>{item.category}</p>    
-                    </div>
-                    <div>
-                        <p>{item.brand}</p>
-                    </div>
-                    <div>
-                        <a href={`/productdetail?id=${item.id}`}>
-                        <p><button>PRODUCT DETAIL</button></p>
-                        </a>
-                    </div>
-                    
-                </div>
-                       
-            )
+        
+        return this.state.detailProdData.map((item,index) => {
+                return(
+                    <div className="product ml-4">
+        <div className="product-img">
+          <img src={`${API_URL}${item.image}`} alt="" style={{width:'250px',height:'200px'}}/>
+          <div className="product-label">
+              {item.discount >0 ?  <span className="sale">-{item.discount}%</span>: null}
+            <span className="new">NEW</span>
+          </div>
+        </div>
+        <div className="product-body">
+          <p className="product-category">{item.category}</p>
+          <h3 className="product-name"><a href={`/productdetail?id=${item.id}`}>{item.name}</a></h3>
+          {item.discount === 0 ?  <h4 className="product-price">{`Rp.${numeral(item.price).format('0,0')}`} </h4>: 
+         <h4 className="product-price">{`Rp.${numeral(item.price-(item.price * (item.discount/100))).format('0,0')}`} <del className="product-old-price">{`Rp.${numeral(item.price).format('0,0')}`}</del></h4> }
+          <div className="product-btns">
+          </div>
+        </div>
+        <div className="add-to-cart">
+         <a href={`/productdetail?id=${item.id}`}><button className="add-to-cart-btn"><Search/>Details</button></a> 
+        </div>
+      </div>
+                           
+                )
         })
     }
 
@@ -135,6 +148,7 @@ class ShowSelected extends Component {
                 <Pagination
                     className='mt-4' aria-label="Page navigation example">
                         {this.renderPagination()}
+                        {this.renderPaginationCategories()}
                 </Pagination>
             </div>
             </div>

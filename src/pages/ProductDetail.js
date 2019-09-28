@@ -8,7 +8,7 @@ import { Divider } from '@material-ui/core';
 import {FaShoppingCart} from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import {Search, ArrowForward} from '@material-ui/icons'
-
+import { Alert } from 'reactstrap'
 
 class ProductDetail extends Component {
 
@@ -50,35 +50,43 @@ class ProductDetail extends Component {
                     price = price - (price * (discount / 100))
                 }
 
-                if(Number(this.state.qty) === 0){
-                    this.setState({error:'HARAP ISI QTY'})
-                }
-                var data = {
-                    productid: id,
-                    price,
-                    qty: Number(this.state.qty),
-                    username: this.props.username
+                
+
+                if(this.props.roleid === 1){
+                    this.setState({error:"Admin can't buy the Items !!!"})
                 }
 
-                const token = localStorage.getItem('username')
-                var headers = {
-                    headers : 
-                    {   'Authorization' : `Bearer ${token}`
-                    },
-                    
-                }
-
-                Axios.post(`${API_URL}/cart/addcart`,{data}, headers)
-                .then((res) =>{
-                    let obj = {
-                        cart: res.data.cartUser,
-                        cartCount: res.data.cartCount
+                if(Number(this.state.qty) === 0 || Number(this.state.qty <= 0)){
+                    this.setState({error:'Please fill the qty correctly !'})
+                }else{
+                    var data = {
+                        productid: id,
+                        price,
+                        qty: Number(this.state.qty),
+                        username: this.props.username
                     }
-                    this.props.onBtnAddToCart(obj)
-                })
-                .catch((err) => {
-                    console.log(err)
-                })
+    
+                    const token = localStorage.getItem('username')
+                    var headers = {
+                        headers : 
+                        {   'Authorization' : `Bearer ${token}`
+                        },
+                        
+                    }
+    
+                    Axios.post(`${API_URL}/cart/addcart`,{data}, headers)
+                    .then((res) =>{
+                        let obj = {
+                            cart: res.data.cartUser,
+                            cartCount: res.data.cartCount
+                        }
+                        this.props.onBtnAddToCart(obj)
+                    })
+                    .catch((err) => {
+                        console.log(err)
+                    })
+
+                }
             }
     // ================================= ADD TO CART END ================================================
 
@@ -213,6 +221,11 @@ class ProductDetail extends Component {
                     </div>
                   </div>
                   <button className="add-to-cart-btn" onClick={() => this.onBtnAddToCart(item.id,item.price, item.discount)}><FaShoppingCart style={{paddingRight:2}}/> add to cart</button>
+                </div>
+                <div>
+                    {this.state.error ?  <Alert color="danger">
+                        {this.state.error}
+                    </Alert>: null}
                 </div>
                
                 <ul className="product-links">

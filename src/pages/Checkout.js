@@ -12,7 +12,7 @@ class CheckOut extends Component {
         error: '',
         uploadBerhasil: false
      }
-     
+
     // =================================================== RENDER ANYTHING START ==============================================
         
     // =================================================== RENDER ANYTHING END   ========================================
@@ -77,6 +77,9 @@ class CheckOut extends Component {
                 </Alert>)
         }
     
+        renderCart = () => {
+            
+        }
 
     render() { 
         if(this.state.uploadBerhasil !== true){
@@ -85,7 +88,7 @@ class CheckOut extends Component {
                     <div className='row'>
                         <div className='col-md-7'>
                             <Paper>
-                                <h1 style={{padding:15}}>CheckOut</h1>
+                                <h1 style={{padding:15}}>Billing Adress</h1>
                                 <Divider variant='fullWidth' style={{border:'1px solid black',margin:15}}  />
                                 <Form style={{padding: 15, margin: 15}}>
                                     <Form.Row>
