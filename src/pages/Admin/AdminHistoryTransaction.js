@@ -13,7 +13,7 @@ class AdminHistoryTransaction extends Component {
         Axios.get(`${API_URL}/cart/gettransactionadmin`)
         .then((res) => {
             console.log(res.data)
-            this.setState({transaction: res.data})
+            this.setState({transaction: res.data.dataProduct})
         })
         .catch((err) => {
             console.log(err)

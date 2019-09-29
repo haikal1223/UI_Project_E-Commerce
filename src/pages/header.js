@@ -230,9 +230,9 @@ return this.state.categoryDrop.map((item) => {
           <div className="row">
             {/* LOGO */}
             <div className="col-md-2">
-              <div className="header-logo" style={{paddingTop: -65}} >
+              <div className="header-logo" >
                 <a href="/" className="logo">
-                  <h3 className='text-white'>FURION</h3>
+                  <h3 className='text-white ' style={{position:'relative', top:'-25px'}}>FURION</h3>
                 </a>
               </div>
             </div>

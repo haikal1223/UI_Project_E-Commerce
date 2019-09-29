@@ -4,39 +4,30 @@ class sideNavBar extends Component {
 
     render() {
         return (
-            <div className='bg-info pt-5 col-2' style={{height:'130vh', color:'white' }} >
-            <Link to='/admin' style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>Product Management</h4>
+            <div className='container'>
+
+            <div id="breadcrumb" className="section">
+            {/* container */}
+            <div className="container">
+                {/* row */}
+                <div className="row">
+                <div className="col-md-12">
+                    <ul className="breadcrumb-tree">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/admin">Admin All Products</a></li>
+                    <li><a href='/adminaddbrand'>Admin Brand</a></li>
+                    <li><a href='/adminaddcategory'>Admin Category</a></li>                    
+                    <li><a href='/adminaddjumbotron'>Admin Jumbotron</a></li>                    
+                    <li><a href='/adminorderchecked'>Admin Order Check</a></li>                    
+                    <li><a href='/adminhistorytransaction'>Admin History Transaction</a></li>                    
+                    </ul>
                 </div>
-            </Link >
-            <Link to='/adminaddbrand'  style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>Brand Management</h4>
                 </div>
-            </Link>
-            <Link to='/adminaddcategory'  style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>Manage Category</h4>
-                </div>
-            </Link>
-            <Link to='/adminaddjumbotron'  style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>Manage Jumbotron</h4>
-                </div>
-            </Link>
-            <Link to='/adminorderchecked'  style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>Manage Transaction</h4>
-                </div>
-            </Link>
-            <Link to='/adminhistorytransaction'  style={{color: 'white '}}>
-                <div style={{paddingBottom: 20}}>
-                    <h4>History Transaction</h4>
-                </div>
-            </Link>
-            
-        </div>
+                {/* /row */}
+            </div>
+            {/* /container */}
+            </div>
+            </div>
         )
     }
 }

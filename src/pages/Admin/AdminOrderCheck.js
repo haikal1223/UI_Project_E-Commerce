@@ -3,21 +3,45 @@ import {Table} from 'reactstrap'
 import Axios from 'axios';
 import { API_URL } from '../../API_URL';
 import SideNavbar from '../Admin/AdminSideBar'
+import { Pagination, PaginationItem, PaginationLink} from 'reactstrap'
+
 
 class AdminOrderCheck extends Component {
     state = { 
-        transactionList: []
+        transactionList: [],
+        totalPages: 0,
+        pages: 0,
+        
      }
 
     componentDidMount(){
-        Axios.get(`${API_URL}/cart/gettransactionadmin`)
+        const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+        Axios.get(`${API_URL}/cart/gettransactionadmin?page=${page}`)
         .then((res) => {
-            console.log(res.data)
-            this.setState({transactionList: res.data})
+            console.log('ini res data di admin order check')
+            console.log(res.data.dataTransaction)
+            this.setState({transactionList: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
         })
         .catch((err) => {
             console.log(err)
         })
+    }
+
+    renderPagination = () => {
+        let totalButton = []
+        let listData = this.state.totalPages
+        let totalPages = Math.ceil(listData / 6)
+        for(var i = 1; i <= totalPages; i++){
+            totalButton.push(<PaginationItem className='mr-2'>
+                                <PaginationLink href={'adminorderchecked?page=' + (i)}>
+                                    {i}
+                                </PaginationLink>
+                            </PaginationItem>)
+                            console.log(i)
+        }
+        console.log(totalPages)
+        console.log(totalButton)
+        return totalButton
     }
 
     onBtnAccepted = (id) =>{
@@ -75,7 +99,7 @@ class AdminOrderCheck extends Component {
     
     // ================================================= RENDER =========================================
     renderTransaction = () => {
-        return this.state.transactionList.map((item) => {     
+        return this.state.transactionList.map((item,i) => {     
                 // if(item.status !== 'package received' && item.status !== 'rejected by admin' && item.status !== 'package delivered' && item.status !=='accepted by admin' ){
                     return ( <tr>
                         <td>{item.id}</td>
@@ -147,6 +171,10 @@ class AdminOrderCheck extends Component {
 
                     </tfoot>
                 </Table>
+                <Pagination
+                    aria-label="Page navigation example" style={{marginTop: 65}}>
+                        {this.renderPagination()}
+                </Pagination>
                 </div>
             </div>
          );
