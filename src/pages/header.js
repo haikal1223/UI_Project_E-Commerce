@@ -29,6 +29,7 @@ import {
         ModalFooter,
         Table
         } from 'reactstrap'
+import numeral from 'numeral'
 
 
 
@@ -200,8 +201,8 @@ return this.state.categoryDrop.map((item) => {
                 <td>{item.id}</td>
                 <td>{item.name}</td>
                 <td>{item.qty}</td>
-                <td>{item.price}</td>
-                <td>{item.totalprice}</td>
+                <td>{`Rp.${numeral(item.price).format('0,0')}`}</td>
+                <td>{`Rp.${numeral(item.totalprice).format('0,0')}`}</td>
                 <td><input type='button' className='btn btn-danger' value='X' onClick={() => this.onBtnRemoveClick(item.productid)}/></td>
               </tr>
             )
@@ -229,7 +230,7 @@ return this.state.categoryDrop.map((item) => {
           <div className="row">
             {/* LOGO */}
             <div className="col-md-2">
-              <div className="header-logo" >
+              <div className="header-logo" style={{paddingTop: -65}} >
                 <a href="/" className="logo">
                   <h3 className='text-white'>FURION</h3>
                 </a>
@@ -240,7 +241,7 @@ return this.state.categoryDrop.map((item) => {
             <div className="col-md-7">
               <div className="header-search">
                 <form>
-                  <input className="input rounded-pill" style={{width: 550, textAlign:'center'}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='What do you need ?'  type='search' />
+                  <input className="input rounded-pill" style={{width: 550, textAlign:'center'}} onChange={(text) => this.props.onSearchBox(text.target.value)} placeholder='Hi! Need Something ?'  type='search' />
                   <a href ={`/showcase?showsearched=${this.props.inputsearch}`} className="search-btn" style={{ marginLeft: -20, padding: '0.7rem 1rem'}}>Search</a>
                 </form>
               </div>
@@ -254,13 +255,13 @@ return this.state.categoryDrop.map((item) => {
                   <a href="#" onClick={() => this.setState({modalOpen: true})}>
                   <i><IoIosCart className=' cart-icon'  /></i> 
                         {/* MODAL CART START */}
-            <Modal isOpen={this.state.modalOpen} toggle={this.closeModal}>
-              <ModalHeader>
-
+            <Modal isOpen={this.state.modalOpen} toggle={this.closeModal} className='modal-lg'>
+              <ModalHeader  style={{textAlign: 'center', margin: 'auto'}}>
+              <h2>MY CART</h2>
               </ModalHeader>
               <ModalBody>
               {console.log(this.props.cart)}
-              <Table bordered dark striped >
+              <Table dark striped >
                 <thead>
                   <tr>
                     <th>ID</th>
@@ -276,9 +277,15 @@ return this.state.categoryDrop.map((item) => {
                 </tbody>
                 <tfoot>
                  <tr>
+                   <td></td>
+                   <td></td>
+                   <td></td>
+                   <td></td>
                    <td>
-                     Rp. {this.totalPrice(this.props.cart)}
+                     {`Rp.${numeral(this.totalPrice(this.props.cart)).format('0,0')}`}
                    </td>
+                   <td></td>
+
                  </tr>
                 </tfoot>
               </Table>

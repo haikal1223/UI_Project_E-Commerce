@@ -180,38 +180,12 @@ class CheckOut extends Component {
                     Direct Bank Transfer
                   </label>
                   <div className="caption">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-                <div className="input-radio">
-                  <input type="radio" name="payment" id="payment-2" />
-                  <label htmlFor="payment-2">
-                    <span />
-                    Cheque Payment
-                  </label>
-                  <div className="caption">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-                  </div>
-                </div>
-                <div className="input-radio">
-                  <input type="radio" name="payment" id="payment-3" />
-                  <label htmlFor="payment-3">
-                    <span />
-                    Paypal System
-                  </label>
-                  <div className="caption">
-                    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+                    <p>
+                        For now we are still making payments via direct transfer.</p>
                   </div>
                 </div>
               </div>
-              <div className="input-checkbox">
-                <input type="checkbox" id="terms" />
-                <label htmlFor="terms">
-                  <span />
-                  I've read and accept the <a href="#">terms &amp; conditions</a>
-                </label>
-              </div>
-              <a href="#" className="primary-btn order-submit">Place order</a>
+              <a href="/uploadpayment" className="primary-btn order-submit" onClick={this.onBtnPayment}>Place order</a>
             </div>
             {/* /Order Details */}
           </div>

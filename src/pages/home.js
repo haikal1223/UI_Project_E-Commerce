@@ -80,7 +80,7 @@ class Home extends React.Component{
             <span className="new">NEW</span>
           </div>
         </div>
-        <div className="product-body">
+        <div className="product-body" style={{width: '100%', marginLeft: 0}}>
           <p className="product-category">{item.category}</p>
           <h3 className="product-name"><a href={`/productdetail?id=${item.id}`}>{item.name}</a></h3>
           {item.discount === 0 ?  <h4 className="product-price">{`Rp.${numeral(item.price).format('0,0')}`} </h4>: 
@@ -110,7 +110,7 @@ class Home extends React.Component{
             <span className="new">NEW</span>
           </div>
         </div>
-        <div className="product-body">
+        <div className="product-body" style={{width: '100%', marginLeft: 0}}>
           <p className="product-category">{item.category}</p>
           <h3 className="product-name"><a href={`/productdetail?id=${item.id}`}>{item.name}</a></h3>
           {item.discount === 0 ?  <h4 className="product-price">{`Rp.${numeral(item.price).format('0,0')}`} </h4>: 

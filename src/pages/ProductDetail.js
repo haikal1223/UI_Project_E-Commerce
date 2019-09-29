@@ -215,7 +215,7 @@ class ProductDetail extends Component {
                   <div className="qty-label">
                     Qty
                     <div className="input-number">
-                      <input type="number" ref='qty' value={this.state.qty}/>
+                      <input type="number" ref='qty' value={this.state.qty<0 ? 0: this.state.qty}/>
                       <span className="qty-up" onClick={()=> this.setState({qty: this.state.qty +1})}>+</span>
                       <span className="qty-down"onClick={()=> this.setState({qty: this.state.qty - 1})} >-</span>
                     </div>

@@ -45,7 +45,7 @@ class Register extends Component {
             return (
             <div className='login'>
                 <div className='container' >
-                    <div className='row justify-content-center mt-5'>
+                    <div className='row justify-content-center '>
                         <div className='col-6'>
                             <Paper style={{marginTop:150}}  >
                             

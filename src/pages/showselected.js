@@ -32,8 +32,9 @@ class ShowSelected extends Component {
                 
             })
         }else if (param === '?category'){
-            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
-            Axios.get(`${API_URL}/category/getspesificcategories/${id}?${page}` )
+            const page = this.props.location.search.split('page=')[1] ? this.props.location.search.split('page=')[1]: 1
+            // untuk page juga jangan di split berdasarkan = karena yang didapat 1&page. jadi diakalin dengan untuk page di split berdasarkan page= kalo ga ada defaultnya 1
+            Axios.get(`${API_URL}/category/getspesificcategories/${id[0]}/${page}` )
             .then((res) => {
                 this.setState({detailProdData: res.data.dataProduct,totalPagesCat: res.data.totalPagesCat, pagesCat: res.data.pagesCat})
             })
@@ -109,7 +110,7 @@ class ShowSelected extends Component {
         
         return this.state.detailProdData.map((item,index) => {
                 return(
-                    <div className="product ml-4">
+                    <div className="product col-md-3 ml-4 " style={{marginTop: 65}}>
         <div className="product-img">
           <img src={`${API_URL}${item.image}`} alt="" style={{width:'250px',height:'200px'}}/>
           <div className="product-label">
@@ -140,13 +141,13 @@ class ShowSelected extends Component {
                 <h1>SHOWCASE</h1>
                 <Divider/>
             <div style={{marginTop: 20  }} className='container'>
-                <div className='row'>
+                <div className='row justify-content-center'>
                         {this.renderSelected()} 
                 </div>
             </div>
             <div className='mt-2'>
                 <Pagination
-                    className='mt-4' aria-label="Page navigation example">
+                    aria-label="Page navigation example" style={{marginTop: 65}}>
                         {this.renderPagination()}
                         {this.renderPaginationCategories()}
                 </Pagination>

@@ -905,6 +905,8 @@ textarea.input {
   background-color: #FFF;
   text-align: center;
   z-index: 20;
+  width: 112%;
+  margin-left: -15px;
 }
 
 .product .product-body .product-category {
