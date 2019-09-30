@@ -3,14 +3,19 @@ import {Table} from 'reactstrap'
 import Axios from 'axios';
 import { API_URL } from '../../API_URL';
 import SideNavbar from '../Admin/AdminSideBar'
-import { Pagination, PaginationItem, PaginationLink} from 'reactstrap'
-
+import { Pagination, PaginationItem, PaginationLink, Modal,
+    ModalHeader,
+    ModalBody,} from 'reactstrap'
+import numeral from 'numeral'
 
 class AdminOrderCheck extends Component {
     state = { 
         transactionList: [],
         totalPages: 0,
         pages: 0,
+        modalOpen: false,
+        idtransaction: 0,
+        transactionId: null,
         
      }
 
@@ -19,13 +24,25 @@ class AdminOrderCheck extends Component {
         Axios.get(`${API_URL}/cart/gettransactionadmin?page=${page}`)
         .then((res) => {
             console.log('ini res data di admin order check')
-            console.log(res.data.dataTransaction)
+            console.log(res.data.dataProduct)
             this.setState({transactionList: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
         })
         .catch((err) => {
             console.log(err)
         })
     }
+    getDetail = (id) => {
+         
+        Axios.get(`${API_URL}/cart/gettransactiondetail/${id}`)
+        .then((res) => {
+            this.setState({transactionDetail: res.data, transactionId: id, modalOpen: true})
+            console.log('ini get detail')
+            console.log(res.data)
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+     }
 
     renderPagination = () => {
         let totalButton = []
@@ -51,7 +68,7 @@ class AdminOrderCheck extends Component {
             Axios.get(`${API_URL}/cart/gettransactionadmin`)
             .then((res) => {
                 console.log(res.data)
-                this.setState({transactionList: res.data})
+                this.setState({transactionList: res.data.dataProduct})
             })
             .catch((err) => {
                 console.log(err)
@@ -68,7 +85,7 @@ class AdminOrderCheck extends Component {
             Axios.get(`${API_URL}/cart/gettransactionadmin`)
             .then((res) => {
                 console.log(res.data)
-                this.setState({transactionList: res.data})
+                this.setState({transactionList: res.data.dataProduct})
             })
             .catch((err) => {
                 console.log(err)
@@ -85,7 +102,7 @@ class AdminOrderCheck extends Component {
             Axios.get(`${API_URL}/cart/gettransactionadmin`)
             .then((res) => {
                 console.log(res.data)
-                this.setState({transactionList: res.data})
+                this.setState({transactionList: res.data.dataProduct})
             })
             .catch((err) => {
                 console.log(err)
@@ -100,15 +117,10 @@ class AdminOrderCheck extends Component {
     // ================================================= RENDER =========================================
     renderTransaction = () => {
         return this.state.transactionList.map((item,i) => {     
-                // if(item.status !== 'package received' && item.status !== 'rejected by admin' && item.status !== 'package delivered' && item.status !=='accepted by admin' ){
                     return ( <tr>
-                        <td>{item.id}</td>
+                        <td>{i+1}</td>
                         <td>{item.username}</td>
                         <td>{item.tanggal.split('T')[0]}</td>
-                        <td>{item.recipient}</td>
-                        <td>{item.adress}</td>
-                        <td>{item.city}</td>
-                        <td>{item.zip}</td>
                         <td>{item.status}</td>
                         <td><img src={`${API_URL}${item.image_upload}`} width={100} alt={null} /></td>
                         {
@@ -136,11 +148,40 @@ class AdminOrderCheck extends Component {
                             item.status === 'package delivered' ?
                             <p>Waiting User Confirmation</p> : null
                         }
+                        <td>
+                        {
+                        item.status === 'accepted by admin' || item.status === 'package received' || item.status === 'image being checked' || item.status === 'waitingConfirmation' ?
+                        <input type='button' className='btn btn-success' value='DETAILS' onClick={() => this.getDetail(item.id)} /> :
+                        null
+                    }
+                        </td>
+
                     </tr>
                    )
-                // }
+                
             
         })
+    }
+
+    renderModal = () => {
+        if(this.state.transactionId && this.state.transactionDetail.length !== 0){
+            var jsx = this.state.transactionDetail.map((item, i) => {
+                    return (
+                        <tr>
+                            <td>{item.id}</td>
+                            <td>{item.recipient}</td>
+                            <td>{item.adress}</td>
+                            <td>{item.city}</td>
+                            <td>{item.zip}</td>
+                            <td>{item.name}</td>
+                            <td>{`Rp.${numeral(item.harga * item.qty).format('0,0')}`}</td>
+                            <td>{item.qty}</td>
+
+                        </tr>
+                    )
+            })
+            return jsx
+        }
     }
 
     render() { 
@@ -148,16 +189,40 @@ class AdminOrderCheck extends Component {
             <div style={{marginTop: 70, }} className='row '>
                 <SideNavbar/>
                 <div className='container ' style={{width: '80vw'}}>
+                <Modal isOpen={this.state.modalOpen} toggle={() => this.setState({modalOpen:false})} scrollable style={{height:350}} className='modal-lg'>
+                    <ModalHeader>
+                        TRANSACTION DETAIL
+                    </ModalHeader>
+                    <ModalBody>
+                        <Table striped bordered>
+                            <thead>
+                                <tr>
+                                    <th>No</th>
+                                    <th>Recepient</th>
+                                    <th>Adress</th>
+                                    <th>City</th>
+                                    <th>Zip</th>
+                                    <th>Product</th>
+                                    <th>Total Harga</th>
+                                    <th>Qty</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {this.renderModal()}
+                            </tbody>
+                            <tfoot>
+                            </tfoot>
+                        </Table>
+                    </ModalBody>
+                 
+
+                </Modal>
                 <Table bordered striped dark >
                     <thead>
                         <tr>
                             <th>ID TRANSAKSI</th>
                             <th>USERNAME</th>
                             <th>DATE</th>
-                            <th>RECEPIENT</th>
-                            <th>ADRESS</th>
-                            <th>CITY</th>
-                            <th>ZIP</th>
                             <th>STATUS</th>
                             <th>IMAGE</th>
                             <th>DETAIL</th>

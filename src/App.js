@@ -20,6 +20,7 @@ import AdminOrderChecked from './pages/Admin/AdminOrderCheck'
 import newArrivalProduct from './pages/newArrivalProduct'
 import ErrorPage from './pages/ErrorPage'
 import AdminHistory from './pages/Admin/AdminHistoryTransaction'
+import HistoryTransaction from './pages/HistoryTransaction'
 import { connect } from 'react-redux'
 import './App.css'
 import {keepLogin, showCartUser} from './Action'
@@ -57,6 +58,7 @@ componentDidMount(){
           <Route path='/adminorderchecked' component={AdminOrderChecked} />
           <Route path='/newarrivalproducts' component={newArrivalProduct} />
           <Route path='/adminhistorytransaction' component={AdminHistory} />
+          <Route path='/historytransaction' component={HistoryTransaction} />
           <Route path='*' component={ErrorPage} />
         </Switch>
         <Footer/>

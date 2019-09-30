@@ -50,20 +50,22 @@ class Home extends React.Component{
 
     renderBrandFilter = () => {
         if(this.state.brandLimit){
-            return this.state.brandLimit.map((item) => {
-                return (
-                    <div className="col-md-4 col-xs-6">
-                        <div className="shop">
-                        <div className="shop-img">
-                            <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '300px', width:'300px'}} />
+            return this.state.brandLimit.map((item, index) => {
+                if(index < 3){
+                    return (
+                        <div className="col-md-4 col-xs-6">
+                            <div className="shop">
+                            <div className="shop-img">
+                                <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '300px', width:'300px'}} />
+                            </div>
+                            <div className="shop-body">
+                                <h3>{item.name}<br />Collection</h3>
+                                <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <ArrowForward/></a>
+                            </div>
+                            </div>
                         </div>
-                        <div className="shop-body">
-                            <h3>{item.name}<br />Collection</h3>
-                            <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <ArrowForward/></a>
-                        </div>
-                        </div>
-                    </div>
-                )
+                    )
+                }
             })
         }
     }

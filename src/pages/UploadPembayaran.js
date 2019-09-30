@@ -9,6 +9,9 @@ import {
     ModalHeader,
     ModalBody,
     ModalFooter,
+    Pagination, 
+    PaginationItem, 
+    PaginationLink
     } from 'reactstrap'
 import numeral from 'numeral'
 
@@ -20,17 +23,20 @@ class UploadPembayaran extends Component {
         idtransaction: 0,
         transactionDetail : [],
         modalOpen: false,
-        transactionId: null
+        transactionId: null,
+        totalPages: 0,
+        pages: 0,
      }
 
      componentWillReceiveProps(newprops){ // untk dapet global state baru dengan mencheck global state yg lama dengan paramaeter newprops yang ada di komponen willreceiveprops , karena global state nya ga auto render
         if(this.props.username !== newprops.username){
             console.log(newprops.username)
-            Axios.get(`${API_URL}/cart/gettransaction/` + newprops.username)
+            const page = this.props.location.search.split('page=')[1] ? this.props.location.search.split('page=')[1]: 1
+            Axios.get(`${API_URL}/cart/gettransaction/${newprops.username}/${page}` )
             .then((res) => {
                 
-                this.setState({transaksi: res.data})
-                console.log(this.state.transaksi)
+                this.setState({transaksi: res.data.dataProduct,totalPages: res.data.totalPages, pages: res.data.pages})
+                console.log(res.data.dataProduct)
             })
             .catch((err) => {
                 console.log(err)
@@ -50,6 +56,22 @@ class UploadPembayaran extends Component {
             console.log(err)
         })
      }
+     renderPagination = () => {
+        let totalButton = []
+        let listData = this.state.totalPages
+        let totalPages = Math.ceil(listData / 6)
+        for(var i = 1; i <= totalPages; i++){
+            totalButton.push(<PaginationItem className='mr-2'>
+                                <PaginationLink href={'uploadpayment?page=' + (i)}>
+                                    {i}
+                                </PaginationLink>
+                            </PaginationItem>)
+                            console.log(i)
+        }
+        console.log(totalPages)
+        console.log(totalButton)
+        return totalButton
+    }
 
      // ================================= UPLOAD IMAGE ===============================================
      onAddImageFileChange = (event) =>{
@@ -280,6 +302,10 @@ class UploadPembayaran extends Component {
 
                     </tfoot>
                 </Table>
+                <Pagination
+                    aria-label="Page navigation example" style={{marginTop: 65}}>
+                        {this.renderPagination()}
+                </Pagination>
             </div>
          );
     }
