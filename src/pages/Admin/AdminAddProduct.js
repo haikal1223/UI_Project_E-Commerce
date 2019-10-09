@@ -193,15 +193,17 @@ renderPagination = () => {
                     {   'Authorization' : `Bearer ${token}`
                     }
                 }
-                Axios.get(`${API_URL}/product/allproduct`,headers)
-                 .then((res)=>{
-                
-                this.setState({listProduct : res.data.dataProduct})
+                const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+                console.log(page)
+                Axios.get(`http://localhost:1999/product/allproduct?page=` + page)
+                .then((res) => {
+                    this.setState({listProduct: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
+                    console.log(this.props.location)
+        
                 })
-                 .catch((err)=>{
-                console.log(err);
-            
-                 })
+                .catch((err) => {
+                    console.log(err)
+                })
                  this.setState({addImageFileName: 'Select Image...', nameAdd : '', modalOpen:false})
                 
                 

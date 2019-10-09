@@ -132,6 +132,7 @@ class App extends React.Component {
         <DropdownItem disabled>{this.props.username}</DropdownItem>
         <DropdownItem onClick={this.onBtnLogOutClick} href='/'>LogOut</DropdownItem>
         <DropdownItem href='/uploadpayment'>Payment</DropdownItem>
+        <DropdownItem href='/historytransaction'>History Transaction</DropdownItem>
 
         </div>
       )
@@ -232,7 +233,7 @@ return this.state.categoryDrop.map((item) => {
             <div className="col-md-2">
               <div className="header-logo" >
                 <a href="/" className="logo">
-                  <h3 className='text-white ' style={{position:'relative', top:'-25px'}}>FURION</h3>
+                  <h3 className='text-white ' style={{marginTop:'25px'}}>FURION</h3>
                 </a>
               </div>
             </div>

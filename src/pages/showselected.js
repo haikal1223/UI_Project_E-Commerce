@@ -54,6 +54,26 @@ class ShowSelected extends Component {
                 
             })
         }
+        // else if (param === '?brandcat'){
+        //     const params = new URLSearchParams(this.props.location.search)
+        //     const brands = params.get('brand')
+        //     const Category = params.get('category')
+        //     console.log(brands)
+        //     console.log(Category)
+        //     const brand = this.props.location.search.split('=')[1]
+        //     const category = this.props.location.search.split('brandid=')[1]
+        //     const page = this.props.location.search.split('catid=')[1]
+
+        //     Axios.get(`${API_URL}/product/brandcat/brandid=${brand}/catid=${category}/page=${page}`)
+        //     .then((res) => {
+        //         this.setState({detailProdData: res.data.dataProduct, totalPagesCat: res.data.totalPages, pages: res.data.pages})
+        //             console.log(brand)
+
+        //     })
+        //     .catch((err) => {
+        //         console.log(err)
+        //     })
+        // }
         else{
             const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
             Axios.get(API_URL + '/product/allproduct?page=' + page)
@@ -66,7 +86,27 @@ class ShowSelected extends Component {
                 
             })
         }
-        console.log(this.props.searchText)
+        // console.log(this.props.searchText)
+        
+        // const params = new URLSearchParams(this.props.location.search)
+        // const brands = params.get('brands')
+        // const Category = params.get('category')
+        // console.log(brands)
+        // console.log(Category)
+        // const brand = this.props.location.search.split('=')[1]
+        // const category = this.props.location.search.split('brandid=')[1]
+        // const page = this.props.location.search.split('catid=')[1]
+
+        // Axios.get(`${API_URL}/product/brandcat/brandid=${brand}/catid=${category}/page=${page}`)
+        // .then((res) => {
+        //     this.setState({detailProdData: res.data.dataProduct, totalPagesCat: res.data.totalPages, pages: res.data.pages})
+        //         console.log(brand)
+
+        // })
+        // .catch((err) => {
+        //     console.log(err)
+        // })
+
     }
 
     

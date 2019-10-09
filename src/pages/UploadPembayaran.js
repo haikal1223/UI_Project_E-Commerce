@@ -28,6 +28,8 @@ class UploadPembayaran extends Component {
         pages: 0,
      }
 
+
+
      componentWillReceiveProps(newprops){ // untk dapet global state baru dengan mencheck global state yg lama dengan paramaeter newprops yang ada di komponen willreceiveprops , karena global state nya ga auto render
         if(this.props.username !== newprops.username){
             console.log(newprops.username)
@@ -105,15 +107,17 @@ class UploadPembayaran extends Component {
 
             Axios.post(API_URL + '/transaction/uploadimage/' + id,formData,headers)
             .then((res)=>{
-                 Axios.get(`${API_URL}/cart/gettransaction/` + this.props.username)
-                 .then((res) => {
-                     
-                     this.setState({transaksi: res.data,imageFileName: 'Select Image...',imageFile:undefined})
-                   
-                 })
-                 .catch((err) => {
-                     console.log(err)
-                 })
+                  const page = this.props.location.search.split('page=')[1] ? this.props.location.search.split('page=')[1]: 1
+            Axios.get(`${API_URL}/cart/gettransaction/${this.props.username}/${page}` )
+            .then((res) => {
+                
+                this.setState({transaksi: res.data.dataProduct,totalPages: res.data.totalPages, pages: res.data.pages,
+                    imageFileName: 'Select Image...',imageFile:undefined})
+                console.log(res.data.dataProduct)
+            })
+            .catch((err) => {
+                console.log(err)
+            })
                 
             })
             .catch((err)=>{
@@ -129,11 +133,13 @@ class UploadPembayaran extends Component {
         onBtnPackageReceived = (id) => {
             Axios.put(`${API_URL}/transaction/packagereceived/${id}`)
             .then((res) => {
-                Axios.get(`${API_URL}/cart/gettransaction/` + this.props.username)
+                const page = this.props.location.search.split('page=')[1] ? this.props.location.search.split('page=')[1]: 1
+                Axios.get(`${API_URL}/cart/gettransaction/${this.props.username}/${page}` )
                 .then((res) => {
                     
-                    this.setState({transaksi: res.data,imageFileName: 'Select Image...',imageFile:undefined})
-                  
+                    this.setState({transaksi: res.data.dataProduct,totalPages: res.data.totalPages, pages: res.data.pages,
+                        imageFileName: 'Select Image...',imageFile:undefined})
+                    console.log(res.data.dataProduct)
                 })
                 .catch((err) => {
                     console.log(err)
@@ -172,15 +178,24 @@ class UploadPembayaran extends Component {
             })
             return `Rp.${numeral(total).format('0,0')}`
         }
+
+        renderTotalQty = () => {
+            var total = 0
+
+            this.state.transactionDetail.forEach((item) => {
+                total+= + item.qty
+            })
+            return total
+        }
     // ===========================================================================
 
     renderTransaksi = () => {
-       return this.state.transaksi.map((item) => {
+       return this.state.transaksi.map((item, i) => {
         //    IF PERTAMA UNTUK UPLOAD
            if(this.state.idtransaction === item.id) {
             return (
                 <tr>
-                <td>{item.id}</td>
+                <td>{i+1}</td>
                 <td>
                     
                     {
@@ -210,11 +225,11 @@ class UploadPembayaran extends Component {
                return (
                    
                    <tr>
-                       <td>{item.id}</td>
+                       <td>{i+1}</td>
                        <td>
                            {
                                item.status ==='waitingConfirmation' ?
-                               <p>Tunggu Konfirmasi Dari Admin</p>:
+                               <p>Please Wait. Admin is checking your order.</p>:
                                null
                            }
                            {
@@ -233,6 +248,11 @@ class UploadPembayaran extends Component {
                                 <p>Package it's on the way</p>
                                 </div>
                                 : null
+                            }
+                            {
+                                item.status === 'image being checked' ?
+                                <p>Your image being checked</p>:
+                                null
                             }
                    </td>
                  
@@ -261,12 +281,12 @@ class UploadPembayaran extends Component {
     render() { 
         return ( 
             <div style={{marginTop: 70}} className='container'>
-                <Modal isOpen={this.state.modalOpen} toggle={() => this.setState({modalOpen:false})} scrollable style={{height:350}}>
+                <Modal isOpen={this.state.modalOpen} className='modal-lg' toggle={() => this.setState({modalOpen:false})} scrollable style={{height:350}}>
                     <ModalHeader>
                         TRANSACTION DETAIL
                     </ModalHeader>
                     <ModalBody>
-                        <Table striped bordered>
+                        <Table striped dark>
                             <thead>
                                 <tr>
                                     <th>NO</th>
@@ -278,8 +298,15 @@ class UploadPembayaran extends Component {
                             <tbody>
                             {this.renderModal()}
                             </tbody>
-                            <tfoot>
+                            <tfoot style={{border:'2px'}}>
+                                <td></td>
+                                <td><b>Total</b></td>
+                                <td style={{fontWeight:'bold'}}>
                                 {this.renderTotal()}
+                                </td>
+                                <td style={{fontWeight: 'bold'}}>
+                                    {this.renderTotalQty()}
+                                </td>
                             </tfoot>
                         </Table>
                     </ModalBody>
@@ -287,10 +314,10 @@ class UploadPembayaran extends Component {
 
                 </Modal>
                 <Table bordered striped dark>
-                    <thead>
+                    <thead style={{textAlign:'center'}}>
                         <tr>
-                            <th>ID</th>
-                            <th>BUKTI PEMBAYARAN</th>
+                            <th>NO</th>
+                            <th>INFORMATION</th>
                             <th> STATUS </th>
                             <th>ACTION</th>
                         </tr>

@@ -65,10 +65,12 @@ class AdminOrderCheck extends Component {
 
         Axios.put(`${API_URL}/transaction/acceptedbyadmin/${id}`)
         .then((res) => {
-            Axios.get(`${API_URL}/cart/gettransactionadmin`)
+            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+            Axios.get(`${API_URL}/cart/gettransactionadmin?page=${page}`)
             .then((res) => {
-                console.log(res.data)
-                this.setState({transactionList: res.data.dataProduct})
+                console.log('ini res data di admin order check')
+                console.log(res.data.dataProduct)
+                this.setState({transactionList: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
             })
             .catch((err) => {
                 console.log(err)
@@ -82,10 +84,12 @@ class AdminOrderCheck extends Component {
     onBtnRejected = (id) => {
         Axios.put(`${API_URL}/transaction/rejectedbyadmin/${id}`)
         .then((res) => {
-            Axios.get(`${API_URL}/cart/gettransactionadmin`)
+            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+            Axios.get(`${API_URL}/cart/gettransactionadmin?page=${page}`)
             .then((res) => {
-                console.log(res.data)
-                this.setState({transactionList: res.data.dataProduct})
+                console.log('ini res data di admin order check')
+                console.log(res.data.dataProduct)
+                this.setState({transactionList: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
             })
             .catch((err) => {
                 console.log(err)
@@ -99,14 +103,16 @@ class AdminOrderCheck extends Component {
     onBtnSendPackage = (id) => {
         Axios.put(`${API_URL}/transaction/packagedelivered/${id}`)
         .then((res) => {
-            Axios.get(`${API_URL}/cart/gettransactionadmin`)
-            .then((res) => {
-                console.log(res.data)
-                this.setState({transactionList: res.data.dataProduct})
-            })
-            .catch((err) => {
-                console.log(err)
-            })
+            const page = this.props.location.search.split('=')[1] ? this.props.location.search.split('=')[1]: 1
+        Axios.get(`${API_URL}/cart/gettransactionadmin?page=${page}`)
+        .then((res) => {
+            console.log('ini res data di admin order check')
+            console.log(res.data.dataProduct)
+            this.setState({transactionList: res.data.dataProduct, totalPages: res.data.totalPages, pages: res.data.pages})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
         })
         .catch((err) =>{
             console.log(err)
@@ -163,6 +169,14 @@ class AdminOrderCheck extends Component {
         })
     }
 
+    renderTotal = () => {
+        var total = 0
+
+        this.state.transactionDetail.forEach((item) => {
+            total+= + item.harga * item.qty
+        })
+        return `Rp.${numeral(total).format('0,0')}`
+    }
     renderModal = () => {
         if(this.state.transactionId && this.state.transactionDetail.length !== 0){
             var jsx = this.state.transactionDetail.map((item, i) => {
@@ -211,6 +225,7 @@ class AdminOrderCheck extends Component {
                                 {this.renderModal()}
                             </tbody>
                             <tfoot>
+                                
                             </tfoot>
                         </Table>
                     </ModalBody>

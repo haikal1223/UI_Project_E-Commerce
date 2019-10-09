@@ -45,6 +45,8 @@ class Home extends React.Component{
         .catch((err) => {
             console.log(err)
         })
+        
+   
 
     }
 
@@ -59,7 +61,7 @@ class Home extends React.Component{
                                 <img  src={`${API_URL}${item.logo}`} alt="logo" style={{height: '300px', width:'300px'}} />
                             </div>
                             <div className="shop-body">
-                                <h3>{item.name}<br />Collection</h3>
+                                <h3>{item.name.toUpperCase()}<br />Collection</h3>
                                 <a href={`showcase?brand=${item.id}`} className="cta-btn">Shop now <ArrowForward/></a>
                             </div>
                             </div>
@@ -142,7 +144,7 @@ class Home extends React.Component{
                     </div>
                      
                     <h2>
-                        <Link to='/newarrivalproducts' className='text-dark'>
+                        <Link to='/showcase' className='text-dark'>
                             NEW ARRIVAL PRODUCT
                         </Link>
                     </h2>
@@ -160,7 +162,7 @@ class Home extends React.Component{
                 </div>
                 <div className='container' style={{marginTop: 35, marginBottom: 65}}>
                     <h2>
-                        <Link to='/newarrivalproducts' className='text-dark'>
+                        <Link to='/showcase' className='text-dark'>
                             SALE ITEM
                         </Link>
                     </h2>
