@@ -59,7 +59,7 @@ class Footer extends Component {
                     <p>this is my e-commerce web application project dedicated for my final project presentation for Job Connector program at Purwadhika Startup and Coding School.</p>
                     <ul className="footer-links">
                       <li><FaPhone /> 081-xxx-xxx</li>
-                      <li><FaEnvelope/>muhammadhaikal507@gmail.com</li>
+                      <li><FaEnvelope/>xxxxxxxxxx@gmail.com</li>
                     </ul>
                   </div>
                 </div>
